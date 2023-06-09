@@ -11,17 +11,14 @@ body, html {
     height: 100vh;
   }
   
-.logo {
-    margin-top: 5vh;
-  }
-
 .logo_svg {
-    height: 200px;
-    width: 200px;
+    margin-top: 3%; 
+    height: 28%;
+    width: auto;
   }
   
 .welcometext {
-    margin-top: 5vh;
+    margin-top: 2%;
     font-size: 35px ;
     font-family: 'Montserrat', sans-serif;
     font-weight: 900;
@@ -30,16 +27,18 @@ body, html {
 
 .buttons {
     display: flex;
+    width: 100%;
+    height: 30%;
     flex-direction: column;
-    margin-top: 10vh;
-    gap: 10px;
+    align-items: center;
+    margin-top: 5%;
+    gap: 5%;
   }
   
 .login_button,
 .register_button {
-    width: 512px;
-    height: 54px;
-    padding: 10px 20px;
+    width: 38%;
+    height: 30%;
     border: none;
     border-radius: 50px;
     font-size: 25px;

@@ -9,9 +9,7 @@ const StartPage = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.logo}>
-                <Logo className={styles.logo_svg}/>    
-            </div>
+            <Logo className={styles.logo_svg}/>    
             <div className={styles.welcometext}>Добро пожаловать!</div>
             <div className={styles.buttons}>
                 <div onClick={() => {navigate('/login')}} className={styles.login_button}>Войти</div>

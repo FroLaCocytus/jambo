@@ -29,7 +29,7 @@ const LoginPage = () => {
                         <div onClick={() => {navigate('/registration')}} className={styles.form_small_text_registration}>Зарегистрируйтесь</div>
                     </div>
                 </form>  
-                <div className={styles.form_button}>Войти</div>
+                <div onClick={() => {navigate('/menu')}} className={styles.form_button}>Войти</div>
 
             </div>
         </div>

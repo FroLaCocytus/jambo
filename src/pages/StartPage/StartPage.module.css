@@ -9,6 +9,7 @@ body, html {
     flex-direction: column;
     align-items: center;
     height: 100vh;
+    user-select: none;
   }
   
 .logo_svg {

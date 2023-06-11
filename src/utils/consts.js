@@ -3,3 +3,8 @@ export const LOGIN_ROUTE = '/login'
 export const REGISTRATION_ROUTE = '/registration'
 export const MENU_ROUTE = '/menu'
 export const BASKET_ROUTE = '/basket'
+export const PROFILE_ROUTE = '/profile'
+export const RESTAURANT_ROUTE = '/restaurant'
+
+
+

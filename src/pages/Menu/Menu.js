@@ -1,49 +1,58 @@
+//База
 import React from "react";
 import styles from './Menu.module.css'
-import { client_buttons } from "../../bar_buttons";
 
+//Всё для навбара
 import NavBar from "../../components/NavBar/NavBar";
+import NavButton from "../../components/NavButton/NavButton";
+import { client_buttons } from "../../nav_button";
 
-import imageMenu from '../../img/menu.png';
-import imageProfile from '../../img/profile.png';
-import imageRestoraunt from '../../img/restoraunt.png';
-import imageBasket from '../../img/basket.png';
+//Свгшки стрелочек
+import { ReactComponent as LeftArrow } from '../../img/arrow_left.svg';
+import { ReactComponent as RightArrow } from '../../img/arrow_right.svg';
 
+//Всё для списка блюд
+import ListDishes from "../../components/ListDishes/ListDishes";
+import { dishes } from "../../dishes";
 
 const Menu = () => {
-   
+    
+    const wordСase = (value, words) => {
+        value = Math.abs(value) % 100; 
+        var num = value % 10;
+        if(value > 10 && value < 20) return words[2]; 
+        if(num > 1 && num < 5) return words[1];
+        if(num === 1) return words[0]; 
+        return words[2];
+    }
+
+    const dish_count = 3;
+    const page_number = 1;
+    
     return (
         <div className={styles.container}>
             <div className={styles.left_side}>
                 <NavBar>
-                    <div className={styles.button_box}>
-                        <div className={styles.img_box}>
-                            <img className={styles.img} src={imageMenu} />
-                        </div>
-                        <div className={styles.text}>Меню</div>
-                    </div>
-                    <div className={styles.button_box}>
-                        <div className={styles.img_box}>
-                            <img className={styles.img} src={imageProfile} />
-                        </div>
-                        <div className={styles.text}>Профиль</div>
-                    </div>
-                    <div className={styles.button_box}>
-                        <div className={styles.img_box}>
-                            <img className={styles.img} src={imageRestoraunt} />
-                        </div>
-                        <div className={styles.text}>О нас</div>
-                    </div>
-                    <div className={styles.button_box}>
-                        <div className={styles.img_box}>
-                            <img className={styles.img} src={imageBasket} />
-                        </div>
-                        <div className={styles.text}>Корзина</div>
-                    </div>
+                    <NavButton data={client_buttons}/>
                 </NavBar>
             </div>
             <div className={styles.right_side}>
-
+                <div className={styles.title}>
+                    <div className={styles.title_left}>
+                        <div className={styles.title_text}>Меню ресторана</div>
+                        <div className={styles.title_description}>{dish_count} {wordСase(dish_count, ["блюдо", "блюда", "блюд"])}</div>
+                    </div>
+                    <div className={styles.title_right}>
+                        <div className={styles.pagination}>
+                            <LeftArrow className={styles.left_arrow}/>
+                            <div className={styles.page}>{page_number}</div>
+                            <RightArrow className={styles.right_arrow}/>
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.list}>
+                  <ListDishes data={dishes}/>
+                </div>
             </div>
         </div>
     );

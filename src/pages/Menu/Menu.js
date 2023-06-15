@@ -1,5 +1,5 @@
 //База
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import styles from './Menu.module.css'
 
 //Всё для навбара
@@ -14,9 +14,25 @@ import { ReactComponent as RightArrow } from '../../img/arrow_right.svg';
 //Всё для списка блюд
 import ListDishes from "../../components/ListDishes/ListDishes";
 import { dishes } from "../../dishes";
+import { fetchProducts } from "../../http/productAPI";
+import { Context } from "../../index";
+import { observer } from "mobx-react-lite";
 
-const Menu = () => {
+
+const Menu = observer(() => {
     
+    const {product} = useContext(Context)
+
+    useEffect(()=>{
+        fetchProducts().then(data => {
+            console.log(data)
+            product.setProducts(data)
+            console.log(product.products[0].id)   
+        })
+        
+    }, [])
+
+
     const wordСase = (value, words) => {
         value = Math.abs(value) % 100; 
         var num = value % 10;
@@ -51,12 +67,12 @@ const Menu = () => {
                     </div>
                 </div>
                 <div className={styles.list}>
-                  <ListDishes data={dishes}/>
+                  <ListDishes/>
                 </div>
             </div>
         </div>
     );
 
-};
+});
 
 export default Menu;

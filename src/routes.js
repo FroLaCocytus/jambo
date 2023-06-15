@@ -9,26 +9,7 @@ import Restaurant from "./pages/Restaurant/Restaurant"
 
 import { BASKET_ROUTE, LOGIN_ROUTE, MENU_ROUTE, REGISTRATION_ROUTE, START_ROUTE, PROFILE_ROUTE, RESTAURANT_ROUTE } from "./utils/consts"
 
-export const authRoutes = [
-
-
-]
-
-
-export const publicRoutes = [
-
-    {
-        path: START_ROUTE,
-        Element: <StartPage />
-    },
-    {
-        path: LOGIN_ROUTE,
-        Element: <LoginPage />
-    },
-    {
-        path: REGISTRATION_ROUTE,
-        Element: <Registration />
-    },
+export const clientRoutes = [
     {
         path: MENU_ROUTE,
         Element: <Menu />
@@ -44,5 +25,21 @@ export const publicRoutes = [
     {
         path: RESTAURANT_ROUTE,
         Element: <Restaurant />
+    }
+]
+
+
+export const publicRoutes = [
+    {
+        path: START_ROUTE,
+        Element: <StartPage />
+    },
+    {
+        path: LOGIN_ROUTE,
+        Element: <LoginPage />
+    },
+    {
+        path: REGISTRATION_ROUTE,
+        Element: <Registration />
     }
 ]

@@ -1,5 +1,5 @@
 //База
-import React from "react";
+import React, { useContext } from "react";
 import styles from './Profile.module.css'
 import { useNavigate  } from 'react-router-dom';
 
@@ -7,10 +7,22 @@ import { useNavigate  } from 'react-router-dom';
 import NavBar from "../../components/NavBar/NavBar";
 import NavButton from "../../components/NavButton/NavButton";
 import { client_buttons } from "../../nav_button";
+import { Context } from '../../index'
+import { observer } from "mobx-react-lite";
 
-const Profile = () => {
+const Profile = observer(() => {
     
     const navigate = useNavigate();
+    const {user} = useContext(Context)
+
+    const logOut = () => {
+        user.setUser({})
+        user.setIsAuth(false)
+        user.setLogin({})
+        user.setRole({})
+        localStorage.removeItem('token')
+
+      }
 
     return (
         <div className={styles.container}>
@@ -33,13 +45,13 @@ const Profile = () => {
                 </form>  
                 <div className={styles.buttons_box}>
                     <div className={styles.confirm_button}>Подтвердить</div>
-                    <div onClick={() => {navigate('/')}} className={styles.logout_button}>Выйти</div>
+                    <div onClick={logOut} className={styles.logout_button}>Выйти</div>
                 </div>
 
             </div>
         </div>
     );
 
-};
+});
 
 export default Profile;

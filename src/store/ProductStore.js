@@ -4,7 +4,6 @@ import {makeAutoObservable} from "mobx";
 export default class ProductStore {
     constructor() {
         this._products = []
-        this._selectedProducts = []
         makeAutoObservable(this)
     }
 
@@ -16,11 +15,4 @@ export default class ProductStore {
         return this._products
     }
 
-    setSelectedProducts(selectedProducts) {
-        this._selectedProducts = selectedProducts
-    }
-
-    get selectedProducts() {
-        return this._selectedProducts
-    }
 }

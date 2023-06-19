@@ -13,7 +13,6 @@ import { ReactComponent as RightArrow } from '../../img/arrow_right.svg';
 
 //Всё для списка блюд
 import ListDishes from "../../components/ListDishes/ListDishes";
-import { dishes } from "../../dishes";
 import { fetchProducts } from "../../http/productAPI";
 import { Context } from "../../index";
 import { observer } from "mobx-react-lite";
@@ -25,9 +24,9 @@ const Menu = observer(() => {
 
     useEffect(()=>{
         fetchProducts().then(data => {
-            console.log(data)
             product.setProducts(data)
-            console.log(product.products[0].id)   
+        }).catch(e => {
+            alert(e.response.data)
         })
         
     }, [])
@@ -42,7 +41,7 @@ const Menu = observer(() => {
         return words[2];
     }
 
-    const dish_count = 3;
+    const dish_count = product.products.length;
     const page_number = 1;
     
     return (

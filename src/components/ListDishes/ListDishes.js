@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styles from './ListDishes.module.css'
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
-
+import { fetchProducts } from "../../http/productAPI";
 
 const ListDishes = observer((props) => {
 
@@ -10,6 +10,13 @@ const ListDishes = observer((props) => {
     const dishesArray = product.products;
 
     const [selectedProducts, setSelectedProducts] = useState([]);
+
+    useEffect(()=>{
+        fetchProducts().then(data => {
+            product.setProducts(data)
+        })
+        
+    }, [])
 
     useEffect(() => {
       const storedProducts = localStorage.getItem('selectedProducts');
@@ -23,7 +30,7 @@ const ListDishes = observer((props) => {
     };
 
     
-    const handleButtonClick2 = (id) => {
+    const addDish = (id) => {
         const selectedProduct = { id, count: 1 };
         let updatedProducts = [];
 
@@ -44,7 +51,7 @@ const ListDishes = observer((props) => {
             {dishesArray.map(item => (
             <div className={styles.dish_card} key={item.id}>
                 <div className={styles.img_box}>
-                    <img className={styles.img} src={item.link} />
+                    <img className={styles.img} src={process.env.REACT_APP_API_URL + item.img_path} />
                 </div>
                 <div className={styles.name}>{item.product_name}</div>
                 <div className={styles.description}>{item.product_description}</div>
@@ -53,7 +60,7 @@ const ListDishes = observer((props) => {
                     <div className={styles.button_box}>
 
                         <div
-                            onClick={() => handleButtonClick2(item.id)}
+                            onClick={() => addDish(item.id)}
                             className={`${isProductSelected(item.id) ? styles.button_true : styles.button_false}`}
                         >
                             {isProductSelected(item.id) ? 'В корзине' : 'Выбрать'}

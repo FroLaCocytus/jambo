@@ -59,6 +59,9 @@ body, html {
     font-weight: 500;
 }
 
+.list {
+    height: 63%;
+}
 
 /*Кнопки*/
 

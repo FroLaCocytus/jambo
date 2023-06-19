@@ -1,5 +1,5 @@
 //База
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styles from './Profile.module.css'
 import { useNavigate  } from 'react-router-dom';
 
@@ -9,11 +9,43 @@ import NavButton from "../../components/NavButton/NavButton";
 import { client_buttons } from "../../nav_button";
 import { Context } from '../../index'
 import { observer } from "mobx-react-lite";
+import { getUserInfo, updateUserInfo } from "../../http/userAPI";
 
 const Profile = observer(() => {
     
     const navigate = useNavigate();
     const {user} = useContext(Context)
+
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [birthday, setBirthday] = useState("");
+
+    useEffect(()=>{
+        getUserInfo()
+        .then(data => {
+            if (data.name != null) setName(data.name)
+            if (data.email != null) setEmail(data.email)
+            if (data.phone_number != null) setPhoneNumber(data.phone_number)
+            if (data.birthday != null) setBirthday(data.birthday)
+        }).catch(e => {
+            alert(e.response.data)
+        })
+    }, [])
+
+
+    const confirm = async () => {
+        updateUserInfo(name, email, phoneNumber, birthday)
+        .then(data => {
+            if (data.name != null) setName(data.name)
+            if (data.email != null) setEmail(data.email)
+            if (data.phone_number != null) setPhoneNumber(data.phone_number)
+            if (data.birthday != null) setBirthday(data.birthday)
+            alert("Успешно!")
+        }).catch(e => {
+            alert(e.response.data)
+        })
+    }
 
     const logOut = () => {
         user.setUser({})
@@ -21,7 +53,8 @@ const Profile = observer(() => {
         user.setLogin({})
         user.setRole({})
         localStorage.removeItem('token')
-
+        localStorage.removeItem('selectedProducts')
+        navigate('/')
       }
 
     return (
@@ -38,13 +71,37 @@ const Profile = observer(() => {
                     </div>
                 </div>
                 <form className={styles.form}>
-                    <input className={styles.form_input} type="text" placeholder="Имя" />
-                    <input className={styles.form_input} type="text" placeholder="Телефон" />
-                    <input className={styles.form_input} type="text" placeholder="Email" />
-                    <input className={styles.form_input} type="text" placeholder="День рождения" />
+                    <input 
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                        className={styles.form_input}
+                        type="text"
+                        placeholder="Имя" 
+                    />
+                    <input 
+                        value={phoneNumber}
+                        onChange={e => setPhoneNumber(e.target.value)}
+                        className={styles.form_input} 
+                        type="text" 
+                        placeholder="Телефон" 
+                    />
+                    <input 
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        className={styles.form_input} 
+                        type="text" 
+                        placeholder="Email" 
+                    />
+                    <input 
+                        value={birthday}
+                        onChange={e => setBirthday(e.target.value)}
+                        className={styles.form_input} 
+                        type="text" 
+                        placeholder="День рождения" 
+                    />
                 </form>  
                 <div className={styles.buttons_box}>
-                    <div className={styles.confirm_button}>Подтвердить</div>
+                    <div onClick={confirm} className={styles.confirm_button}>Подтвердить</div>
                     <div onClick={logOut} className={styles.logout_button}>Выйти</div>
                 </div>
 

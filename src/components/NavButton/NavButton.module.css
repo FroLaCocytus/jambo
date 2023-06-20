@@ -6,6 +6,8 @@ body, html {
 
 .container {
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .button_box {
@@ -13,6 +15,7 @@ body, html {
     height: 18%;
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
 
 .button_box:hover {
@@ -38,4 +41,22 @@ body, html {
     font-weight: 300;
     height: auto;
     width: 70%;
+}
+
+.output {
+    font-size: 20px ;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    height: 18%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+}
+
+.output:hover {
+    background-color: white;
+    cursor: pointer;
+
 }

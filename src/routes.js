@@ -5,9 +5,28 @@ import LoginPage from "./pages/LoginPage/LoginPage"
 import Registration from "./pages/Registration/Registration"
 import Profile from "./pages/Profile/Profile"
 import Restaurant from "./pages/Restaurant/Restaurant"
+import Documents from "./pages/Documents/Documents"
+import Staff from "./pages/Staff/Staff"
+import Warehouse from "./pages/Warehouse/Warehouse"
 
 
-import { BASKET_ROUTE, LOGIN_ROUTE, MENU_ROUTE, REGISTRATION_ROUTE, START_ROUTE, PROFILE_ROUTE, RESTAURANT_ROUTE } from "./utils/consts"
+import { BASKET_ROUTE, LOGIN_ROUTE, MENU_ROUTE, REGISTRATION_ROUTE, START_ROUTE, PROFILE_ROUTE, RESTAURANT_ROUTE, 
+    DOCUMENT_ROUTE, STAFF_ROUTE, WAREHOUSE_ROUTE } from "./utils/consts"
+
+export const publicRoutes = [
+    {
+        path: START_ROUTE,
+        Element: <StartPage />
+    },
+    {
+        path: LOGIN_ROUTE,
+        Element: <LoginPage />
+    },
+    {
+        path: REGISTRATION_ROUTE,
+        Element: <Registration />
+    }
+]
 
 export const clientRoutes = [
     {
@@ -29,17 +48,21 @@ export const clientRoutes = [
 ]
 
 
-export const publicRoutes = [
+export const accountantRoutes = [
     {
-        path: START_ROUTE,
-        Element: <StartPage />
+        path: DOCUMENT_ROUTE,
+        Element: <Documents />
     },
     {
-        path: LOGIN_ROUTE,
-        Element: <LoginPage />
-    },
+        path: STAFF_ROUTE,
+        Element: <Staff />
+    }
+]
+
+
+export const merchandiserRoutes = [
     {
-        path: REGISTRATION_ROUTE,
-        Element: <Registration />
+        path: WAREHOUSE_ROUTE,
+        Element: <Warehouse />
     }
 ]

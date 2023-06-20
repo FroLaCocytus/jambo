@@ -6,5 +6,10 @@ export const BASKET_ROUTE = '/basket'
 export const PROFILE_ROUTE = '/profile'
 export const RESTAURANT_ROUTE = '/restaurant'
 
+export const DOCUMENT_ROUTE = '/accountant/document'
+export const STAFF_ROUTE = '/accountant/staff'
+
+export const WAREHOUSE_ROUTE = '/warehouse'
+
 
 

@@ -1,9 +1,11 @@
 import React from "react";
 import styles from './NavBar.module.css'
 import { ReactComponent as Logo } from '../../img/logo.svg';
+import { observer } from "mobx-react-lite";
 
 
-const NavBar = ({ children }) => {
+const NavBar = observer(({ children }) => {
+
     return (
         <div className={styles.bar}>
             <div className={styles.logo_box}>
@@ -15,6 +17,6 @@ const NavBar = ({ children }) => {
         </div>
     );
 
-};
+});
 
 export default NavBar;

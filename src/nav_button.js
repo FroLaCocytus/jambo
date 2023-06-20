@@ -2,6 +2,9 @@ import imageMenu from './img/menu.png';
 import imageProfile from './img/profile.png';
 import imageRestaurant from './img/restaurant.png';
 import imageBasket from './img/basket.png';
+import imageDocument from './img/document.png';
+import imageTomato from './img/tomato.png';
+
 
 export const client_buttons = [
 
@@ -27,11 +30,25 @@ export const client_buttons = [
     }
 ]
 
+export const accountant_buttons = [
+
+    {
+        text: "Документы",
+        link: imageDocument,
+        route: '/accountant/document'
+    },
+    {
+        text: "Персонал",
+        link: imageProfile,
+        route: '/accountant/staff'
+    }
+]
+
 export const merchandiser_buttons = [
 
     {
         text: "Склад",
-        link: imageMenu,
+        link: imageTomato,
         route: '/warehouse'
     }
 ]

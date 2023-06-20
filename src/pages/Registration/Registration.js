@@ -66,7 +66,6 @@ const Registration = observer(() => {
                     </div>
                 </form>  
                 <div onClick={register} className={styles.form_button}>Зарегистрироваться</div>
-
             </div>
         </div>
     );

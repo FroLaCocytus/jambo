@@ -9,22 +9,22 @@ import { accountant_buttons } from "../../nav_button";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import { observer } from "mobx-react-lite";
 import { registration } from "../../http/userAPI";
-import { useNavigate  } from 'react-router-dom';
 
 
 const Staff = observer(() => {
+    const options = ["merchandiser", "cashier", "junior chef", "courier"];
+
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [role, setRole] = useState(null);
 
     const flagOutput = true;
-    const navigate = useNavigate();
 
     const register = async () => {
         await registration(login, password, role)
         .then(data => {
-          navigate('/')
+          alert("Успешно")
         })
         .catch(e => {
           alert(e.response.data)
@@ -75,7 +75,7 @@ const Staff = observer(() => {
                         />
                         </div>
                         <div className={styles.dropdown_box}>
-                            <Dropdown role={role} setRole={setRole}/>
+                            <Dropdown role={role} setRole={setRole} options={options}/>
                         </div>
                     </form>  
                     <div className={styles.button_box}>

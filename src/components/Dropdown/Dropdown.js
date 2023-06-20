@@ -2,8 +2,7 @@ import React from 'react';
 import styles from './Dropdown.module.css'
 import { observer } from 'mobx-react-lite';
 
-const Dropdown = observer(({role, setRole}) => {
-  const options = ["merchandiser", "cashier", "junior chef", "courier"];
+const Dropdown = observer(({role, setRole, options}) => {
 
   const handleSelect = (option) => {
     setRole(option);

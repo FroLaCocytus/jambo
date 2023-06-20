@@ -1,5 +1,5 @@
 //База
-import React from "react";
+import React, {useState} from "react";
 import styles from './Documents.module.css'
 
 //Всё для навбара
@@ -8,8 +8,14 @@ import NavButton from "../../components/NavButton/NavButton";
 import { accountant_buttons } from "../../nav_button";
 import { observer } from "mobx-react-lite";
 
+
+import ModalAddDoc from "../../components/ModalAddDoc/ModalAddDoc";
+
 const Documents = observer(() => {
     const flagOutput = true 
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     return (
         <div className={styles.container}>
@@ -24,7 +30,7 @@ const Documents = observer(() => {
                         <div className={styles.title_text}>Документы</div>
                     </div>
                     <div className={styles.title_right}>
-                        <div className={styles.button_upload}>Загрузить документ</div>
+                        <div onClick={()=>{setIsModalOpen(true)}} className={styles.button_upload}>Загрузить документ</div>
                     </div>
                 </div>
                 <div className={styles.data_box}>
@@ -41,7 +47,9 @@ const Documents = observer(() => {
                     </div>
                 </div>
             </div>
-
+            {isModalOpen && (
+                <ModalAddDoc setIsModalOpen={setIsModalOpen}/>
+            )}
         </div>
     );
 

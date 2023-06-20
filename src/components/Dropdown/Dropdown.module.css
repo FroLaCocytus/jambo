@@ -40,4 +40,5 @@
 .option{
     color: black;
     background-color: white;
+    cursor: pointer;
 }

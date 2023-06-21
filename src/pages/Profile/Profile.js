@@ -35,6 +35,45 @@ const Profile = observer(() => {
 
 
     const confirm = async () => {
+
+        let alertMessage = "Некорректные данные:\n";
+        let incorrectCount = 0;
+
+        const regexName = /^[a-zA-Zа-яА-Я]{1,30}$/
+        const regexEmail= /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+        const regexNumber = /^\d{1,20}$/
+        const regexBirthday = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.\d{4}$/
+  
+        if (!regexName.test(name)){
+          alertMessage = alertMessage + "Некорректное имя (от 1 до 30 символов, только буквы)\n"
+          incorrectCount += 1
+        }
+        if (!regexNumber.test(phoneNumber)){
+            alertMessage = alertMessage + "Некорректный номер телефона (от 1 до 20 символов, только цифры)\n"
+            incorrectCount += 1
+        }
+        if (!regexEmail.test(email)){
+            alertMessage = alertMessage + "Некорректная почта (думаю можно не объяснять)\n"
+            incorrectCount += 1
+        }
+        if (!regexBirthday.test(birthday)){
+            alertMessage = alertMessage + "Некорректная дата (формат даты 23.02.2023)\n"
+            incorrectCount += 1
+        }
+        if (incorrectCount > 0) {
+          alert(alertMessage)
+          getUserInfo()
+          .then(data => {
+              if (data.name != null) setName(data.name)
+              if (data.email != null) setEmail(data.email)
+              if (data.phone_number != null) setPhoneNumber(data.phone_number)
+              if (data.birthday != null) setBirthday(data.birthday)
+          }).catch(e => {
+              alert(e.response.data)
+          })
+          return
+        }
+
         updateUserInfo(name, email, phoneNumber, birthday)
         .then(data => {
             if (data.name != null) setName(data.name)

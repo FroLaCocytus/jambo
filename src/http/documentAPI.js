@@ -21,7 +21,27 @@ export const updloadDocument = async (file, description, roles, date) => {
     }
 }
 
+export const updateDocumentInfo = async (id, description, roles) => {
+  const requestData = {id: id, document_description: description, roles: JSON.stringify(roles)};
+  const {data} = await $authHost.post('document/update', requestData)
+  return data
+}
+
+export const deleteDocument = async (id) => {
+  const requestData = {id: id};
+  const {data} = await $authHost.post('document/delete', requestData)
+  return data
+}
+
+export const fetchOne = async (id) => {
+  const requestData = {id: id};
+  const {data} = await $authHost.post('document/one', requestData)
+  return data
+}
+
 export const fetchDocuments = async () => {
   const {data} = await $authHost.get('document')
   return data
 }
+
+

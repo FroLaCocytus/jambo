@@ -8,7 +8,8 @@ export default class MerchandiseStore {
     }
 
     setMerchandises(merchandises) {
-        this._merchandises = merchandises
+        const sortedArray = merchandises.sort((a, b) => b.id - a.id);
+        this._merchandises = sortedArray
     }
 
     get merchandises() {

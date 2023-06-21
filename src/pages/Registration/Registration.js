@@ -15,8 +15,33 @@ const Registration = observer(() => {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const register = async () => {
+
+      let alertMessage = "Некорректные данные:\n";
+      let incorrectCount = 0;
+      const regexLogin = /^[a-zA-Z][a-zA-Z0-9]{3,14}$/
+      const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,14}$/
+
+      if (!regexLogin.test(login)){
+        alertMessage = alertMessage + "Некорректный логин (от 4 до 15 символов, только буквы и цифры)\n"
+        incorrectCount += 1
+      }
+      if (!regexPassword.test(password)){
+        alertMessage = alertMessage + "Некорректный пароль (от 6 до 15 символов, должен содержать хотябы одну заглавную и прописную букву, а также цифру)\n"
+        incorrectCount += 1
+      }
+      if (password !== confirmPassword){
+        alertMessage = alertMessage + "Пароли не совпадают"
+        incorrectCount += 1
+      }
+
+      if (incorrectCount > 0) {
+        alert(alertMessage)
+        return
+      }
+
       await registration(login, password, "client")
       .then(data => {
+        alert('Успешно!')
         navigate('/')
       })
       .catch(e => {

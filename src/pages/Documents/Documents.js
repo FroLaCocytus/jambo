@@ -10,9 +10,9 @@ import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
 import { fetchDocuments } from "../../http/documentAPI";
 import ListDocument from "../../components/ListDocument/ListDocument";
-
-
 import ModalAddDoc from "../../components/ModalAddDoc/ModalAddDoc";
+
+
 
 const Documents = observer(() => {
     const flagOutput = true 
@@ -63,6 +63,7 @@ const Documents = observer(() => {
             {isModalOpen && (
                 <ModalAddDoc setIsModalOpen={setIsModalOpen}/>
             )}
+
         </div>
     );
 

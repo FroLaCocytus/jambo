@@ -1,33 +1,35 @@
-import React, {useState, useContext} from "react";
-import styles from './ModalAddMerchandise.module.css'
+import React, {useState, useContext, useEffect} from "react";
+import styles from './ModalMerchandiseInfo.module.css'
 import { observer } from 'mobx-react-lite';
 import { ReactComponent as CrossSVG } from '../../img/cross.svg';
-import { addMerchandise } from "../../http/merchandiseAPI";
+import { updateMerchandiseInfo, deleteMerchandise } from "../../http/merchandiseAPI";
 import { Context } from "../../index";
 import { fetchMerchandise } from "../../http/merchandiseAPI";
 
-const ModalAddMerchandise = observer(({setIsModalOpen}) => {
+const ModalMerchandiseInfo = observer(({setIsModalOpen, selectedItem}) => {
 
   const {merchandise} = useContext(Context)
 
   const [count, setCount] = useState("");
   const [name, setName] = useState("");
 
+  useEffect(()=>{
+    setName(selectedItem.name)
+    setCount(selectedItem.count)
+  }, [])
 
 // Работа с товарами
-const handlerAdd = async () => {
-    const regexName = /^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9]{0,24}$/
+const handlerUpdate = async () => {
+    const regexName = /^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9 ]{0,24}$/
     const regexCount = /^[1-9]\d{0,3}$/
 
     if (!regexName.test(name) || !regexCount.test(count)) {
         alert("Некорректные данные")
         return
     }
-    await addMerchandise(name, count)
+    await updateMerchandiseInfo(selectedItem.id, name, count)
     .then(data => {
-        alert(`Товар ${data.name} успешно добавлен`)
-        setName("")
-        setCount("")
+        alert(`Товар ${data.name} успешно обновлён`)
     })
     .catch(e => {
         alert(e.response.data)
@@ -38,12 +40,27 @@ const handlerAdd = async () => {
 
   };
 
+  const handlerDelete = async () => {
+
+    await deleteMerchandise(selectedItem.id)
+    .then(data => {
+        if(data.message === "Успешно")alert(`Товар успешно удалён`)
+    })
+    .catch(e => {
+        alert(e.response.data)
+    })
+    fetchMerchandise().then(data => {
+        merchandise.setMerchandises(data)
+    })
+    setIsModalOpen(false)
+  };
+
   return (
     <div className={styles.modal}>
     <div className={styles.modal_content}>
         <div className={styles.modal_title}>
             <div className={styles.modal_title_box}>
-                <div className={styles.modal_title_text}>Добавление товара</div>
+                <div className={styles.modal_title_text}>{selectedItem.name}</div>
                 <div className={styles.modal_title_img_box}>
                     <CrossSVG className={styles.modal_title_img} onClick={()=>{setIsModalOpen(false)}}/>
                 </div>
@@ -61,11 +78,12 @@ const handlerAdd = async () => {
         </div>
 
         <div className={styles.modal_buttons_box}>
-            <button className={styles.modal_button} onClick={handlerAdd}>Добавить</button>
+            <button className={styles.modal_button_update} onClick={handlerUpdate}>Обновить</button>
+            <button className={styles.modal_button_delete} onClick={handlerDelete}>Удалить</button>
         </div>
     </div>
     </div>
   );
 });
 
-export default ModalAddMerchandise;
+export default ModalMerchandiseInfo;

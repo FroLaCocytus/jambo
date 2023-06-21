@@ -8,7 +8,8 @@ export default class DocumentStore {
     }
 
     setDocuments(documents) {
-        this._documents = documents
+        const sortedArray = documents.sort((a, b) => b.id - a.id);
+        this._documents = sortedArray
     }
 
     get documents() {

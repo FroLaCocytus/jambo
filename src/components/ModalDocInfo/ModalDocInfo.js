@@ -1,13 +1,13 @@
-import React, {useState, useContext} from "react";
-import styles from './ModalAddDoc.module.css'
+import React, {useState, useContext, useEffect} from "react";
+import styles from './ModalDocInfo.module.css'
 import { observer } from 'mobx-react-lite';
 import { ReactComponent as CrossSVG } from '../../img/cross.svg';
-import { updloadDocument } from "../../http/documentAPI";
+import { deleteDocument, updateDocumentInfo } from "../../http/documentAPI";
 import { Context } from "../../index";
 import { fetchDocuments } from "../../http/documentAPI";
 import { format } from 'date-fns';
 
-const ModalAddDoc = observer(({setIsModalOpen}) => {
+const ModalDocInfo = observer(({setIsModalOpen, selectedItem}) => {
 
   const [selectedFile, setSelectedFile] = useState(null);
   const {documentStore} = useContext(Context)
@@ -16,27 +16,19 @@ const ModalAddDoc = observer(({setIsModalOpen}) => {
   const [accessRole, setAccessRole] = useState([]);
   const [description, setDescription] = useState("");
 
-// Работа с файлом
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+  useEffect(()=>{
+    console.log("Start")
+    console.log(selectedItem)
+    setAccessRole(JSON.parse(selectedItem.roles))
+    setDescription(selectedItem.document_description)
+  }, [])
 
-  const uploadFile = async () => {
-    if (!selectedFile) {
-        alert("Загрузите файл!")
-        return
-    }
 
-    const currentDate = new Date()
-    const formattedDate = format(currentDate, 'dd.MM.yyyy')
-    console.log(formattedDate)
+  const updateFileInfo = async () => {
 
-    await updloadDocument(selectedFile, description, accessRole, formattedDate)
+    await updateDocumentInfo(selectedItem.id, description, accessRole)
     .then(data => {
-        alert(`Документ ${data.title} успешно добавлен`)
-        setSelectedFile(null)
-        setDescription("")
-        setAccessRole([])
+        alert(`Документ ${data.title} успешно обновлён`)
     })
     .catch(e => {
         alert(e.response.data)
@@ -45,6 +37,20 @@ const ModalAddDoc = observer(({setIsModalOpen}) => {
         documentStore.setDocuments(data)
     })
 
+  };
+
+  const deleteFile = async () => {
+    await deleteDocument(selectedItem.id)
+    .then(data => {
+        if(data.message === "Успешно")alert(`Документ успешно удалён`)
+    })
+    .catch(e => {
+        alert(e.response.data)
+    })
+    fetchDocuments().then(data => {
+        documentStore.setDocuments(data)
+    })
+    setIsModalOpen(false)
   };
 
 // Работа с Ролями
@@ -68,18 +74,12 @@ const ModalAddDoc = observer(({setIsModalOpen}) => {
     <div className={styles.modal_content}>
         <div className={styles.modal_title}>
             <div className={styles.modal_title_box}>
-                <div className={styles.modal_title_text}>Добавление документа</div>
+                <div className={styles.modal_title_text}>{selectedItem.title}</div>
                 <div className={styles.modal_title_img_box}>
                     <CrossSVG className={styles.modal_title_img} onClick={()=>{setIsModalOpen(false)}}/>
                 </div>
             </div>
             <div className={styles.line_big}></div>
-        </div>
-        <div className={styles.modal_uploader}>
-            <div className={styles.custom_file_upload} onClick={() => document.getElementById('file-upload').click()}>
-                {selectedFile ? <div>{selectedFile.name}</div> : <div>Выберите файл</div>}
-            </div>
-            <input id="file-upload" className={styles.modal_input} type="file" onChange={handleFileChange} accept=".docx" />
         </div>
         <div className={styles.modal_description}>
             <div className={styles.modal_description_text}>Описание</div>
@@ -109,11 +109,12 @@ const ModalAddDoc = observer(({setIsModalOpen}) => {
             </div>
         </div>
         <div className={styles.modal_buttons_box}>
-            <button className={styles.modal_button} onClick={uploadFile}>Загрузить</button>
+            <button className={styles.modal_button_update} onClick={updateFileInfo}>Обновить</button>
+            <button className={styles.modal_button_delete} onClick={deleteFile}>Удалить</button>
         </div>
     </div>
     </div>
   );
 });
 
-export default ModalAddDoc;
+export default ModalDocInfo;

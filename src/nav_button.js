@@ -49,6 +49,6 @@ export const merchandiser_buttons = [
     {
         text: "Склад",
         link: imageTomato,
-        route: '/warehouse'
+        route: '/merchandiser/warehouse'
     }
 ]

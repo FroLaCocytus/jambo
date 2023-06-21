@@ -1,12 +1,16 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import styles from './ModalAddDoc.module.css'
 import { observer } from 'mobx-react-lite';
 import { ReactComponent as CrossSVG } from '../../img/cross.svg';
 import { updloadDocument } from "../../http/documentAPI";
+import { Context } from "../../index";
+import { fetchDocuments } from "../../http/documentAPI";
+import { format } from 'date-fns';
 
 const ModalAddDoc = observer(({setIsModalOpen}) => {
 
   const [selectedFile, setSelectedFile] = useState(null);
+  const {documentStore} = useContext(Context)
 
   const options = ["merchandiser", "chef"];
   const [accessRole, setAccessRole] = useState([]);
@@ -22,14 +26,21 @@ const ModalAddDoc = observer(({setIsModalOpen}) => {
         alert("Загрузите файл!")
         return
     }
-    await updloadDocument(selectedFile, description, accessRole)
+
+    const currentDate = new Date()
+    const formattedDate = format(currentDate, 'dd.MM.yyyy')
+    console.log(formattedDate)
+
+    await updloadDocument(selectedFile, description, accessRole, formattedDate)
     .then(data => {
         alert(`Документ ${data.title} успешно добавлен`)
     })
     .catch(e => {
         alert(e.response.data)
     })
-
+    fetchDocuments().then(data => {
+        documentStore.setDocuments(data)
+    })
 
   };
 

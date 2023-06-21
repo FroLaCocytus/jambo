@@ -78,6 +78,10 @@ body, html {
     margin-right: 45%;
 }
 
+.button_upload:hover {
+    background-color: #0C3848;
+    }
+    
 .data_box {
     height: 83%;
     width: 100%;

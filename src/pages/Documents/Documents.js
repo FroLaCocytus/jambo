@@ -1,5 +1,5 @@
 //База
-import React, {useState} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import styles from './Documents.module.css'
 
 //Всё для навбара
@@ -7,15 +7,26 @@ import NavBar from "../../components/NavBar/NavBar";
 import NavButton from "../../components/NavButton/NavButton";
 import { accountant_buttons } from "../../nav_button";
 import { observer } from "mobx-react-lite";
+import { Context } from "../../index";
+import { fetchDocuments } from "../../http/documentAPI";
+import ListDocument from "../../components/ListDocument/ListDocument";
 
 
 import ModalAddDoc from "../../components/ModalAddDoc/ModalAddDoc";
 
 const Documents = observer(() => {
     const flagOutput = true 
+    
+    const {documentStore} = useContext(Context)
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    useEffect(()=>{
+        fetchDocuments().then(data => {
+            documentStore.setDocuments(data)
+        })
+        
+    }, [])
 
     return (
         <div className={styles.container}>
@@ -43,7 +54,9 @@ const Documents = observer(() => {
                                 <div className={styles.table_text_right}>Дата добавления</div>
                             </div>
                         </div>
-                        <div className={styles.table_bottom}></div>
+                        <div className={styles.table_bottom}>
+                            <ListDocument/>
+                        </div>
                     </div>
                 </div>
             </div>

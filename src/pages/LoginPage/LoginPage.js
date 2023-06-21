@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from './LoginPage.module.css'
 import { ReactComponent as Logo } from '../../img/logo.svg';
 

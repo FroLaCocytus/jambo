@@ -7,6 +7,12 @@ const StartPage = () => {
     
     const navigate = useNavigate();
 
+    var screenWidth = window.screen.width;
+    var screenHeight = window.screen.height;
+    console.log("Ширина экрана: " + screenWidth + " пикселей");
+    console.log("Высота экрана: " + screenHeight + " пикселей");
+    //ширина 1536 пикселей
+    //высота 864 пикселей
     return (
         <div className={styles.container}>
             <Logo className={styles.logo_svg}/>    

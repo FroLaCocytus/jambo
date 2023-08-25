@@ -10,26 +10,27 @@ const AppRouter = observer(() => {
 
     return (
         <Routes>
-            {user.isAuth && user.role === "client" && clientRoutes.map(({ path, Element }) => (
+
+                {clientRoutes.map(({ path, Element }) => (
                 <Route key={path} path={path} element={Element} />
             ))}
 
-            {user.isAuth && user.role === "accountant" && accountantRoutes.map(({ path, Element }) => (
+            {accountantRoutes.map(({ path, Element }) => (
                 <Route key={path} path={path} element={Element} />
             ))}
 
-            {user.isAuth && user.role === "merchandiser" && merchandiserRoutes.map(({ path, Element }) => (
+            {merchandiserRoutes.map(({ path, Element }) => (
                 <Route key={path} path={path} element={Element} />
             ))}
 
-            {!user.isAuth && publicRoutes.map(({ path, Element }) => (
+            {publicRoutes.map(({ path, Element }) => (
                 <Route key={path} path={path} element={Element} />
             ))}
-            {user.isAuth && user.role === "client" && <Route path="*" element={<Navigate to="/menu" replace />} />}
-            {user.isAuth && user.role === "accountant" && <Route path="*" element={<Navigate to="/accountant/document" replace />} />}
-            {user.isAuth && user.role === "merchandiser" && <Route path="*" element={<Navigate to="merchandiser/warehouse" replace />} />}
+            {/*{user.isAuth && user.role === "client" && <Route path="*" element={<Navigate to="/menu" replace />} />}*/}
+            {/*{user.isAuth && user.role === "accountant" && <Route path="*" element={<Navigate to="/accountant/document" replace />} />}*/}
+            {/*{user.isAuth && user.role === "merchandiser" && <Route path="*" element={<Navigate to="merchandiser/warehouse" replace />} />}*/}
 
-            {!user.isAuth && <Route path="*" element={<Navigate to="/" replace />} />}
+            <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
     );
 

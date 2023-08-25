@@ -1,19 +1,17 @@
 .container {
-    display: flex;
-    flex-direction: column;
     height: 100%;
     width: 100%;
-
+    z-index: 99;
   }
-  
 
-.select_true,
-.select_false {
+.dropdownFull,
+.dropdown{
     height: 100%;
+    padding-top: 25px;
+    box-sizing: border-box;
     width: 60%;
     border: none;
     border-radius: 50px;
-    background-color: #EFFAFE;
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
     font-size: 18px;
@@ -21,24 +19,54 @@
     padding-left: 7%;
     appearance: none;
     outline: none;
-    background-image: url('../../img/arrow_down.svg');
+
     background-repeat: no-repeat;
     background-position: right 10% center;
 
-  }
+}
+
+
+.color{
+    background-color: #EFFAFE;
+    background-image: url('../../img/arrow_down.svg');
+}
+.colorWhite{
+    position: relative;
+    overflow: hidden;
+    background-color: white;
+    border-radius: 40px 40px 0 0;
+}
+.colorWhite:before{
+    content: "";
+    position: absolute;
+
+    z-index: 30;
+    background: url('../../img/arrow_down.svg');
+    transform: rotate(180deg);
+}
+
+.dropdownFull{
+    color: rgb(198,186,191);
+}
+.select_false,
+.select_true {
+    border-radius: 0 0 50px 50px;
+    width: 60%;
+    background-color: white;
+}
 
 .select_true {
-    color: black;
-
+    visibility: visible;
 }
+
 .select_false {
-    color: #BBBABF;
+    visibility: hidden;
 }
-
-
 
 .option{
     color: black;
-    background-color: white;
+    font-family: 'Montserrat';
+
+    padding-left: 40px ;
     cursor: pointer;
 }

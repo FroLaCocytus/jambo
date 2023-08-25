@@ -15,9 +15,10 @@ export const loginAPI = async (login, password) => {
 
 
 export const check = async () => {
-    const {data} = await $authHost.get('user/auth')
-    localStorage.setItem('token', data.token)
-    return jwt_decode(data.token)
+    // const {data} = await $authHost.get('user/auth')
+    // localStorage.setItem('token', data.token)
+    // return jwt_decode(data.token)
+    console.log("Ребятки вам бы зарегаться")
 }
 
 

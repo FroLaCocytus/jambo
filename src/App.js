@@ -8,22 +8,22 @@ import { Spinner } from "react-bootstrap";
 
 const App = observer(() => {
   const {user} = useContext(Context)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
-  useEffect( () => {
-    check()
-    .then(data => {
-      user.setUser(true)
-      user.setIsAuth(true)
-      user.setLogin(data.login)
-      user.setRole(data.role)
-
-    })
-    .catch(e => {
-      console.log('Произошла ошибка:', e.response.data)
-    })
-    .finally( () => setLoading(false))
-  }, [])
+  // useEffect( () => {
+  //   check()
+  //   .then(data => {
+  //     user.setUser(true)
+  //     user.setIsAuth(true)
+  //     user.setLogin(data.login)
+  //     user.setRole(data.role)
+  //
+  //   })
+  //   .catch(e => {
+  //     console.log('Произошла ошибка:', e.response.data)
+  //   })
+  //   .finally( () => setLoading(false))
+  // }, [])
 
   if (loading) {
     return <Spinner animation={"grow"}/>

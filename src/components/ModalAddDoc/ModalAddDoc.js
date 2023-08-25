@@ -6,6 +6,7 @@ import { updloadDocument } from "../../http/documentAPI";
 import { Context } from "../../index";
 import { fetchDocuments } from "../../http/documentAPI";
 import { format } from 'date-fns';
+import Dropdown from "../Dropdown/Dropdown";
 
 const ModalAddDoc = observer(({setIsModalOpen}) => {
 
@@ -98,6 +99,7 @@ const ModalAddDoc = observer(({setIsModalOpen}) => {
                         </div>
                     ))}
                 </div>
+                <Dropdown options={rol}/>
                 <div className={styles.modal_access_img_box}>
                     <select className={styles.modal_select} value={""} onChange={(e) => handleSelect(e.target.value)}>
                         <option  hidden value=""></option>

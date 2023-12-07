@@ -9,7 +9,9 @@ export const RESTAURANT_ROUTE = '/restaurant'
 export const DOCUMENT_ROUTE = '/accountant/document'
 export const STAFF_ROUTE = '/accountant/staff'
 
-export const WAREHOUSE_ROUTE = 'merchandiser/warehouse'
+export const WAREHOUSE_ROUTE = '/merchandiser/warehouse'
+
+export const CASHIER_ROUTE = '/cashier'
 
 
 

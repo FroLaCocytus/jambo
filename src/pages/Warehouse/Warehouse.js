@@ -8,9 +8,10 @@ import NavButton from "../../components/NavButton/NavButton";
 import { merchandiser_buttons } from "../../nav_button";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
-import { fetchMerchandise } from "../../http/merchandiseAPI";
+import { getAllMerchandise } from "../../http/merchandiseAPI";
 import ListMerchandises from "../../components/ListMerchandises/ListMerchandises";
 import ModalAddMerchandise from "../../components/ModalAddMerchandise/ModalAddMerchandise";
+import ModalAlert from "../../components/ModalAlert/ModalAlert";
 
 
 const Warehouse = observer(() => {
@@ -20,8 +21,19 @@ const Warehouse = observer(() => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    // Модалка с уведомлениями
+    const [showModal, setShowModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+    const [modalStatus, setModalStatus] = useState(true);
+
+    const handleShowAlertModal = (message, status) => {
+        setModalMessage(message); 
+        setModalStatus(status);
+        setShowModal(true); 
+    };
+
     useEffect(()=>{
-        fetchMerchandise().then(data => {
+        getAllMerchandise().then(data => {
             merchandise.setMerchandises(data)
         })
         
@@ -54,14 +66,15 @@ const Warehouse = observer(() => {
                             </div>
                         </div>
                         <div className={styles.table_bottom}>
-                            <ListMerchandises/>
+                            <ListMerchandises handleShowAlertModal={handleShowAlertModal}/>
                         </div>
                     </div>
                 </div>
             </div>
             {isModalOpen && (
-                <ModalAddMerchandise setIsModalOpen={setIsModalOpen}/>
+                <ModalAddMerchandise setIsModalOpen={setIsModalOpen} handleShowAlertModal={handleShowAlertModal}/>
             )}
+            <ModalAlert isOpen={showModal} message={modalMessage} onClose={() => setShowModal(false)} status={modalStatus}/>
         </div>
     );
 

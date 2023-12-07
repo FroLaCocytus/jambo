@@ -2,39 +2,42 @@ import React, {useState, useContext, useEffect} from "react";
 import styles from './ModalMerchandiseInfo.module.css'
 import { observer } from 'mobx-react-lite';
 import { ReactComponent as CrossSVG } from '../../img/cross.svg';
-import { updateMerchandiseInfo, deleteMerchandise } from "../../http/merchandiseAPI";
+import { updateMerchandise, deleteMerchandise } from "../../http/merchandiseAPI";
 import { Context } from "../../index";
-import { fetchMerchandise } from "../../http/merchandiseAPI";
+import { getAllMerchandise } from "../../http/merchandiseAPI";
+import ModalAlert from "../ModalAlert/ModalAlert";
 
-const ModalMerchandiseInfo = observer(({setIsModalOpen, selectedItem}) => {
+const ModalMerchandiseInfo = observer(({setIsModalOpen, selectedItem, handleShowAlertModal}) => {
 
   const {merchandise} = useContext(Context)
 
   const [count, setCount] = useState("");
-  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
+
 
   useEffect(()=>{
-    setName(selectedItem.name)
+    setTitle(selectedItem.title)
     setCount(selectedItem.count)
   }, [])
 
 // Работа с товарами
 const handlerUpdate = async () => {
-    const regexName = /^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9 ]{0,24}$/
-    const regexCount = /^[1-9]\d{0,3}$/
+    const namePattern = /^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9]{0,24}$/;
+    const countPattern = /^[1-9]\d{0,3}$/;
 
-    if (!regexName.test(name) || !regexCount.test(count)) {
-        alert("Некорректные данные")
+    if (!namePattern.test(title) || !countPattern.test(count)) {
+        handleShowAlertModal("Вы ввели некоректные данные", false)
         return
     }
-    await updateMerchandiseInfo(selectedItem.id, name, count)
+    await updateMerchandise(selectedItem.id, title, count)
     .then(data => {
-        alert(`Товар ${data.name} успешно обновлён`)
+        console.log(data)
+        handleShowAlertModal(`Товар ${data.title} успешно обновлён`,true)
     })
     .catch(e => {
-        alert(e.response.data)
+        handleShowAlertModal(e.response.data,false)
     })
-    fetchMerchandise().then(data => {
+    getAllMerchandise().then(data => {
         merchandise.setMerchandises(data)
     })
 
@@ -44,12 +47,12 @@ const handlerUpdate = async () => {
 
     await deleteMerchandise(selectedItem.id)
     .then(data => {
-        if(data.message === "Успешно")alert(`Товар успешно удалён`)
+        if(data.success === true)handleShowAlertModal(`Товар успешно удалён`,true)
     })
     .catch(e => {
-        alert(e.response.data)
+        handleShowAlertModal(e.response.data,false)
     })
-    fetchMerchandise().then(data => {
+    getAllMerchandise().then(data => {
         merchandise.setMerchandises(data)
     })
     setIsModalOpen(false)
@@ -60,7 +63,7 @@ const handlerUpdate = async () => {
     <div className={styles.modal_content}>
         <div className={styles.modal_title}>
             <div className={styles.modal_title_box}>
-                <div className={styles.modal_title_text}>{selectedItem.name}</div>
+                <div className={styles.modal_title_text}>{selectedItem.title}</div>
                 <div className={styles.modal_title_img_box}>
                     <CrossSVG className={styles.modal_title_img} onClick={()=>{setIsModalOpen(false)}}/>
                 </div>
@@ -70,7 +73,7 @@ const handlerUpdate = async () => {
         
         <div className={styles.modal_input_box}>
             <div className={styles.modal_box_text}>Название</div>
-            <input value={name} onChange={e => setName(e.target.value)} className={styles.modal_box_input}></input>
+            <input value={title} onChange={e => setTitle(e.target.value)} className={styles.modal_box_input}></input>
         </div>
         <div className={styles.modal_input_box}>
             <div className={styles.modal_box_text}>Количество</div>

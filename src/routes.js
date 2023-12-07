@@ -8,10 +8,11 @@ import Restaurant from "./pages/Restaurant/Restaurant"
 import Documents from "./pages/Documents/Documents"
 import Staff from "./pages/Staff/Staff"
 import Warehouse from "./pages/Warehouse/Warehouse"
+import CashierPage from "./pages/CashierPage/CashierPage"
 
 
 import { BASKET_ROUTE, LOGIN_ROUTE, MENU_ROUTE, REGISTRATION_ROUTE, START_ROUTE, PROFILE_ROUTE, RESTAURANT_ROUTE, 
-    DOCUMENT_ROUTE, STAFF_ROUTE, WAREHOUSE_ROUTE } from "./utils/consts"
+    DOCUMENT_ROUTE, STAFF_ROUTE, WAREHOUSE_ROUTE, CASHIER_ROUTE } from "./utils/consts"
 
 export const publicRoutes = [
     {
@@ -64,5 +65,12 @@ export const merchandiserRoutes = [
     {
         path: WAREHOUSE_ROUTE,
         Element: <Warehouse />
+    }
+]
+
+export const cashierRoutes = [
+    {
+        path: CASHIER_ROUTE,
+        Element: <CashierPage />
     }
 ]

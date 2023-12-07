@@ -12,6 +12,10 @@ import { createBasketProduct } from "../../http/basketAPI";
 import { Context } from "../../index";
 import { getUserInfo } from "../../http/userAPI";
 
+//Падежи 
+import { wordСase } from "../../utils/wordCase";
+
+
 const Basket = observer(() => {
     
     const [selectedProducts, setSelectedProducts] = useState([]);
@@ -25,44 +29,33 @@ const Basket = observer(() => {
       }
     }, []);
 
-    const dish_count = selectedProducts.length;
-
-    const wordСase = (value, words) => {
-        value = Math.abs(value) % 100; 
-        var num = value % 10;
-        if(value > 10 && value < 20) return words[2]; 
-        if(num > 1 && num < 5) return words[1];
-        if(num === 1) return words[0]; 
-        return words[2];
-    }
+    const dish_count = selectedProducts.length; // кол-во блюд
 
     const ordering = async () => {
         const data = selectedProducts.map(obj => ({ id: obj.id, count: obj.count }));
-        let flagAccess = false;
-        if(data.length > 0){
-            await getUserInfo()
-            .then(data => {
-                if (data.name == null || data.email == null || data.phone_number == null || data.birthday == null) {
-                    alert("Заполните профиль!")
-                } else {
-                    flagAccess = true;
-                }
-            }).catch(e => {
-                alert(e.response.data)
-            })
-            
-            if(flagAccess){
-                await createBasketProduct(data, user.login)
-                .then(data => {
-                    alert("Успешно!")
-                    localStorage.removeItem('selectedProducts')
-                    setSelectedProducts([])
-                })
-                .catch(e => {
-                    alert(e.response.data)
-                })
+    
+        // Проверяем, есть ли выбранные товары
+        if (data.length === 0) {
+            return; 
+        }
+    
+        try {
+            const userInfo = await getUserInfo();
+    
+            // Проверяем, заполнен ли профиль пользователя
+            if (userInfo.name == null || userInfo.email == null || userInfo.phone_number == null || userInfo.birthday == null) {
+                alert("Заполните профиль!");
+                return; 
             }
 
+            await createBasketProduct(data, user.login);
+
+            localStorage.removeItem('selectedProducts');
+            setSelectedProducts([]);
+    
+            alert("Успешно!");
+        } catch (error) {
+            alert(error.response ? error.response.data : "Произошла ошибка");
         }
     }
 

@@ -2,41 +2,42 @@ import React, {useState, useContext} from "react";
 import styles from './ModalAddMerchandise.module.css'
 import { observer } from 'mobx-react-lite';
 import { ReactComponent as CrossSVG } from '../../img/cross.svg';
-import { addMerchandise } from "../../http/merchandiseAPI";
+import { createMerchandise } from "../../http/merchandiseAPI";
 import { Context } from "../../index";
-import { fetchMerchandise } from "../../http/merchandiseAPI";
+import { getAllMerchandise } from "../../http/merchandiseAPI";
+import ModalAlert from "../ModalAlert/ModalAlert";
 
-const ModalAddMerchandise = observer(({setIsModalOpen}) => {
+const ModalAddMerchandise = observer(({setIsModalOpen, handleShowAlertModal}) => {
 
-  const {merchandise} = useContext(Context)
+    const {merchandise} = useContext(Context)
 
-  const [count, setCount] = useState("");
-  const [name, setName] = useState("");
+    const [count, setCount] = useState("");
+    const [title, setTitle] = useState("");
 
+    // Функция создания товара
+    const handlerCreate = async () => {
+        // Регулярные выражения для проверки ввода
+        const namePattern = /^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9]{0,24}$/;
+        const countPattern = /^[1-9]\d{0,3}$/;
 
-// Работа с товарами
-const handlerAdd = async () => {
-    const regexName = /^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9]{0,24}$/
-    const regexCount = /^[1-9]\d{0,3}$/
+        // Проверка корректности введенных данных
+        if (!namePattern.test(title) || !countPattern.test(count)) {
+            handleShowAlertModal("Вы ввели некоректные данные", false)
+            return;
+        }
 
-    if (!regexName.test(name) || !regexCount.test(count)) {
-        alert("Некорректные данные")
-        return
-    }
-    await addMerchandise(name, count)
-    .then(data => {
-        alert(`Товар ${data.name} успешно добавлен`)
-        setName("")
-        setCount("")
-    })
-    .catch(e => {
-        alert(e.response.data)
-    })
-    fetchMerchandise().then(data => {
-        merchandise.setMerchandises(data)
-    })
-
-  };
+        await createMerchandise(title, count).then(data => {
+            handleShowAlertModal(`Товар ${data.title} успешно добавлен`,true)
+            setTitle("")
+            setCount("")
+        })
+        .catch(e => {
+            handleShowAlertModal(e.response.data,false)
+        })
+        getAllMerchandise().then(data => {
+            merchandise.setMerchandises(data)
+        })  
+    };
 
   return (
     <div className={styles.modal}>
@@ -53,7 +54,7 @@ const handlerAdd = async () => {
         
         <div className={styles.modal_input_box}>
             <div className={styles.modal_box_text}>Название</div>
-            <input value={name} onChange={e => setName(e.target.value)} className={styles.modal_box_input}></input>
+            <input value={title} onChange={e => setTitle(e.target.value)} className={styles.modal_box_input}></input>
         </div>
         <div className={styles.modal_input_box}>
             <div className={styles.modal_box_text}>Количество</div>
@@ -61,7 +62,7 @@ const handlerAdd = async () => {
         </div>
 
         <div className={styles.modal_buttons_box}>
-            <button className={styles.modal_button} onClick={handlerAdd}>Добавить</button>
+            <button className={styles.modal_button} onClick={handlerCreate}>Добавить</button>
         </div>
     </div>
     </div>

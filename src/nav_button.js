@@ -52,3 +52,12 @@ export const merchandiser_buttons = [
         route: '/merchandiser/warehouse'
     }
 ]
+
+export const cashier_buttons = [
+
+    {
+        text: "Заказы",
+        link: imageDocument,
+        route: '/cashier'
+    }
+]

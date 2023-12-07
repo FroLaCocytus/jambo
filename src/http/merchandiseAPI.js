@@ -1,32 +1,33 @@
 import {$authHost} from "./index";
 
 
-export const addMerchandise = async (name, count) => {
+export const createMerchandise = async (title, count) => {
 
-    const requestData = {name: name, count: count};
-    const {data} = await $authHost.post('merchandise/warehouse/add', requestData)
+    const requestData = {title: title, count: count};
+    const {data} = await $authHost.post('merchandise/create', requestData)
     return data
 }
 
-export const updateMerchandiseInfo = async (id, name, count) => {
-  const requestData = {id: id, name: name, count: count};
-  const {data} = await $authHost.post('merchandise/warehouse/update', requestData)
+export const updateMerchandise = async (id, title, count) => {
+  const requestData = {id: id, title: title, count: count};
+  const {data} = await $authHost.put('merchandise/update', requestData)
   return data
 }
 
 export const deleteMerchandise = async (id) => {
   const requestData = {id: id};
-  const {data} = await $authHost.post('merchandise/warehouse/delete', requestData)
+  console.log(id)
+  const {data} = await $authHost.post('merchandise/delete', requestData)
   return data
 }
 
 export const fetchOne = async (id) => {
   const requestData = {id: id};
-  const {data} = await $authHost.post('merchandise/warehouse/one', requestData)
+  const {data} = await $authHost.post('merchandise/one', requestData)
   return data
 }
 
-export const fetchMerchandise = async () => {
-  const {data} = await $authHost.get('merchandise/warehouse')
+export const getAllMerchandise = async () => {
+  const {data} = await $authHost.get('merchandise/all')
   return data
 }

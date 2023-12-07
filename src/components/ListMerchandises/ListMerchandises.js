@@ -5,7 +5,7 @@ import { Context } from "../../index";
 import ModalMerchandiseInfo from "../../components/ModalMerchandiseInfo/ModalMerchandiseInfo";
 
 
-const ListMerchandises = observer(() => {
+const ListMerchandises = observer(({handleShowAlertModal}) => {
 
     const {merchandise} = useContext(Context)
     const arrayMerchandise = merchandise.merchandises
@@ -23,7 +23,7 @@ const ListMerchandises = observer(() => {
                 <div className={styles.row} key={item.id} onClick={() => {handlerRowClick(item)}}>
                     <div className={styles.info_box}>
                         <div className={styles.row_left}>
-                            <div className={styles.row_text_left}>{item.name}</div>
+                            <div className={styles.row_text_left}>{item.title}</div>
                         </div>
                         <div className={styles.row_right}>
                             <div className={styles.row_text_right}>{item.count}</div>
@@ -33,7 +33,7 @@ const ListMerchandises = observer(() => {
                 </div>
             ))}
             {isModalInfoOpen && (
-                <ModalMerchandiseInfo setIsModalOpen={setIsModalInfoOpen} selectedItem={selectedItem}/>
+                <ModalMerchandiseInfo setIsModalOpen={setIsModalInfoOpen} selectedItem={selectedItem} handleShowAlertModal={handleShowAlertModal}/>
             )}
         </div>
     );

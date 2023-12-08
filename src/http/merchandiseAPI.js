@@ -21,14 +21,18 @@ export const deleteMerchandise = async (id) => {
   return data
 }
 
-export const fetchOne = async (id) => {
-  const requestData = {id: id};
-  const {data} = await $authHost.post('merchandise/one', requestData)
-  return data
-}
+// export const getOne = async (id) => {
+//   const requestData = {id: id};
+//   const {data} = await $authHost.post('merchandise/one', requestData)
+//   return data
+// }
 
 export const getAllMerchandise = async (page) => {
-  console.log(page)
-  const {data} = await $authHost.get(`merchandise/all?page=${page-1}&size=${10}`)
-  return data
+  if (page === 0){
+    const {data} = await $authHost.get(`merchandise/all?page=${page}&size=${10}`)
+    return data
+  } else {
+    const {data} = await $authHost.get(`merchandise/all?page=${page-1}&size=${10}`)
+    return data
+  }
 }

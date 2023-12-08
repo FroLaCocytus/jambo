@@ -5,7 +5,6 @@ import { ReactComponent as CrossSVG } from '../../img/cross.svg';
 import { createMerchandise } from "../../http/merchandiseAPI";
 import { Context } from "../../index";
 import { getAllMerchandise } from "../../http/merchandiseAPI";
-import ModalAlert from "../ModalAlert/ModalAlert";
 
 const ModalAddMerchandise = observer(({setIsModalOpen, handleShowAlertModal, page, setMaxPage}) => {
 
@@ -18,7 +17,7 @@ const ModalAddMerchandise = observer(({setIsModalOpen, handleShowAlertModal, pag
     const handlerCreate = async () => {
         // Регулярные выражения для проверки ввода
         const namePattern = /^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9]{0,24}$/;
-        const countPattern = /^[1-9]\d{0,3}$/;
+        const countPattern = /^[1-9]\d{0,4}$/;
 
         // Проверка корректности введенных данных
         if (!namePattern.test(title) || !countPattern.test(count)) {

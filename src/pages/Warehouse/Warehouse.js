@@ -40,13 +40,13 @@ const Warehouse = observer(() => {
     };
 
     const handleLeftArrow = () => {
+        if (maxPage === 0) return
         setPage(prevPage => Math.max(prevPage - 1, 1));
-        // Здесь вы также можете добавить вызов API для получения данных для новой страницы
     };
     
     const handleRightArrow = () => {
+        if (maxPage === 0) return
         setPage(prevPage => Math.min(prevPage + 1, maxPage));
-        // Аналогично, добавьте вызов API если необходимо
     };
 
     useEffect(()=>{
@@ -91,7 +91,7 @@ const Warehouse = observer(() => {
                             <LeftArrow onClick={handleLeftArrow} className={styles.left_arrow}/>
                             <div className={styles.page}>{page}</div>
                             <RightArrow onClick={handleRightArrow} className={styles.right_arrow}/>
-                        </div>
+                    </div>
                 </div>
             </div>
             {isModalOpen && (

@@ -4,10 +4,9 @@ import { observer } from 'mobx-react-lite';
 import { ReactComponent as CrossSVG } from '../../img/cross.svg';
 import { updloadDocument } from "../../http/documentAPI";
 import { Context } from "../../index";
-import { fetchDocuments } from "../../http/documentAPI";
-import { format } from 'date-fns';
+import { getAllDocuments } from "../../http/documentAPI";
 
-const ModalAddDoc = observer(({setIsModalOpen}) => {
+const ModalAddDoc = observer(({setIsModalOpen, handleShowAlertModal, page, setPage, setMaxPage}) => {
 
   const [selectedFile, setSelectedFile] = useState(null);
   const {documentStore} = useContext(Context)
@@ -23,26 +22,23 @@ const ModalAddDoc = observer(({setIsModalOpen}) => {
 
   const uploadFile = async () => {
     if (!selectedFile) {
-        alert("Загрузите файл!")
+        handleShowAlertModal("Загрузите файл!", false)
         return
     }
 
-    const currentDate = new Date()
-    const formattedDate = format(currentDate, 'dd.MM.yyyy')
-    console.log(formattedDate)
-
-    await updloadDocument(selectedFile, description, accessRole, formattedDate)
+    await updloadDocument(selectedFile, description, accessRole)
     .then(data => {
-        alert(`Документ ${data.title} успешно добавлен`)
+        handleShowAlertModal(`Документ ${data.title} успешно добавлен`,true)
         setSelectedFile(null)
         setDescription("")
         setAccessRole([])
     })
     .catch(e => {
-        alert(e.response.data)
+        handleShowAlertModal(e.response.data,true)
     })
-    fetchDocuments().then(data => {
-        documentStore.setDocuments(data)
+    getAllDocuments(page).then(data => {
+        documentStore.setDocuments(data.content)
+        setMaxPage(data.totalPages)
     })
 
   };

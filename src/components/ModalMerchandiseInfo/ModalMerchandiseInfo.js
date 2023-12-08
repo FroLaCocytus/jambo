@@ -22,7 +22,7 @@ const ModalMerchandiseInfo = observer(({setIsModalOpen, selectedItem, handleShow
 
 // Работа с товарами
 const handlerUpdate = async () => {
-    const namePattern = /^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9]{0,24}$/;
+    const namePattern = /^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9 ]{0,24}$/;
     const countPattern = /^[1-9]\d{0,3}$/;
 
     if (!namePattern.test(title) || !countPattern.test(count)) {
@@ -55,8 +55,7 @@ const handlerUpdate = async () => {
     })
     getAllMerchandise(page).then(data => {
         merchandise.setMerchandises(data.content)
-        setMaxPage(data.totalPages)
-        if (data.totalPages<page){
+        if (data.totalPages<page && data.totalPages !== 0){
             setPage(data.totalPages)
         }
     })

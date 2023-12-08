@@ -4,10 +4,10 @@ import { observer } from 'mobx-react-lite';
 import { ReactComponent as CrossSVG } from '../../img/cross.svg';
 import { deleteDocument, updateDocumentInfo } from "../../http/documentAPI";
 import { Context } from "../../index";
-import { fetchDocuments } from "../../http/documentAPI";
+import { getAllDocuments } from "../../http/documentAPI";
 import { format } from 'date-fns';
 
-const ModalDocInfo = observer(({setIsModalOpen, selectedItem}) => {
+const ModalDocInfo = observer(({setIsModalOpen, selectedItem, handleShowAlertModal, page, setPage, setMaxPage}) => {
 
   const [selectedFile, setSelectedFile] = useState(null);
   const {documentStore} = useContext(Context)
@@ -17,24 +17,23 @@ const ModalDocInfo = observer(({setIsModalOpen, selectedItem}) => {
   const [description, setDescription] = useState("");
 
   useEffect(()=>{
-    console.log("Start")
-    console.log(selectedItem)
-    setAccessRole(JSON.parse(selectedItem.roles))
-    setDescription(selectedItem.document_description)
+    setAccessRole(selectedItem.roles.map(role => role.name))
+    setDescription(selectedItem.description)
   }, [])
 
 
   const updateFileInfo = async () => {
-
+    
     await updateDocumentInfo(selectedItem.id, description, accessRole)
     .then(data => {
-        alert(`Документ ${data.title} успешно обновлён`)
+        handleShowAlertModal(`Документ ${data.title} успешно обновлён`, true)
     })
     .catch(e => {
-        alert(e.response.data)
+        handleShowAlertModal(e.response.data, false)
     })
-    fetchDocuments().then(data => {
-        documentStore.setDocuments(data)
+    getAllDocuments(page).then(data => {
+        documentStore.setDocuments(data.content)
+        setMaxPage(data.totalPages)
     })
 
   };
@@ -42,13 +41,16 @@ const ModalDocInfo = observer(({setIsModalOpen, selectedItem}) => {
   const deleteFile = async () => {
     await deleteDocument(selectedItem.id)
     .then(data => {
-        if(data.message === "Успешно")alert(`Документ успешно удалён`)
+        if(data.success === true)handleShowAlertModal(`Документ успешно удалён`,true)
     })
     .catch(e => {
-        alert(e.response.data)
+        handleShowAlertModal(e.response.data, false)
     })
-    fetchDocuments().then(data => {
-        documentStore.setDocuments(data)
+    getAllDocuments(page).then(data => {
+        documentStore.setDocuments(data.content)
+        if (data.totalPages<page && data.totalPages !== 0){
+            setPage(data.totalPages)
+        }
     })
     setIsModalOpen(false)
   };

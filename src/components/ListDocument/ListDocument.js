@@ -5,7 +5,7 @@ import { Context } from "../../index";
 import ModalDocInfo from "../../components/ModalDocInfo/ModalDocInfo";
 
 
-const ListDocument = observer(() => {
+const ListDocument = observer(({handleShowAlertModal, page, setPage, setMaxPage}) => {
 
     const {documentStore} = useContext(Context)
     const arrayDocument = documentStore.documents
@@ -17,6 +17,10 @@ const ListDocument = observer(() => {
         setIsModalInfoOpen(true)
     }
 
+    const convertDateFormat = (dateString) => {
+        const [year, month, day] = dateString.split('-');
+        return `${day}-${month}-${year}`;
+      };
 
     return (
         <div className={styles.container}>
@@ -27,14 +31,20 @@ const ListDocument = observer(() => {
                             <div className={styles.row_text_left}>{item.title}</div>
                         </div>
                         <div className={styles.row_right}>
-                            <div className={styles.row_text_right}>{item.date}</div>
+                            <div className={styles.row_text_right}>{convertDateFormat(item.date)}</div>
                         </div>
                     </div>
                     <div className={styles.line}></div>
                 </div>
             ))}
             {isModalInfoOpen && (
-                <ModalDocInfo setIsModalOpen={setIsModalInfoOpen} selectedItem={selectedItem}/>
+                <ModalDocInfo 
+                setIsModalOpen={setIsModalInfoOpen} 
+                selectedItem={selectedItem}
+                handleShowAlertModal={handleShowAlertModal} 
+                page={page} 
+                setPage={setPage}
+                setMaxPage={setMaxPage}/>
             )}
         </div>
         

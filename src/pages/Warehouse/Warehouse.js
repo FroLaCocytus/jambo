@@ -13,6 +13,9 @@ import ListMerchandises from "../../components/ListMerchandises/ListMerchandises
 import ModalAddMerchandise from "../../components/ModalAddMerchandise/ModalAddMerchandise";
 import ModalAlert from "../../components/ModalAlert/ModalAlert";
 
+//Свгшки стрелочек
+import { ReactComponent as LeftArrow } from '../../img/arrow_left.svg';
+import { ReactComponent as RightArrow } from '../../img/arrow_right.svg';
 
 const Warehouse = observer(() => {
     const flagOutput = true 
@@ -26,18 +29,33 @@ const Warehouse = observer(() => {
     const [modalMessage, setModalMessage] = useState("");
     const [modalStatus, setModalStatus] = useState(true);
 
+    const [page, setPage] = useState(1);
+    const [maxPage , setMaxPage ] = useState(1);
+
+
     const handleShowAlertModal = (message, status) => {
         setModalMessage(message); 
         setModalStatus(status);
         setShowModal(true); 
     };
 
+    const handleLeftArrow = () => {
+        setPage(prevPage => Math.max(prevPage - 1, 1));
+        // Здесь вы также можете добавить вызов API для получения данных для новой страницы
+    };
+    
+    const handleRightArrow = () => {
+        setPage(prevPage => Math.min(prevPage + 1, maxPage));
+        // Аналогично, добавьте вызов API если необходимо
+    };
+
     useEffect(()=>{
-        getAllMerchandise().then(data => {
-            merchandise.setMerchandises(data)
+        getAllMerchandise(page).then(data => {
+            merchandise.setMerchandises(data.content)
+            setMaxPage(data.totalPages)
         })
         
-    }, [])
+    }, [page])
 
     return (
         <div className={styles.container}>
@@ -66,13 +84,18 @@ const Warehouse = observer(() => {
                             </div>
                         </div>
                         <div className={styles.table_bottom}>
-                            <ListMerchandises handleShowAlertModal={handleShowAlertModal}/>
+                            <ListMerchandises handleShowAlertModal={handleShowAlertModal} page={page}/>
                         </div>
                     </div>
+                    <div className={styles.pagination}>
+                            <LeftArrow onClick={handleLeftArrow} className={styles.left_arrow}/>
+                            <div className={styles.page}>{page}</div>
+                            <RightArrow onClick={handleRightArrow} className={styles.right_arrow}/>
+                        </div>
                 </div>
             </div>
             {isModalOpen && (
-                <ModalAddMerchandise setIsModalOpen={setIsModalOpen} handleShowAlertModal={handleShowAlertModal}/>
+                <ModalAddMerchandise setIsModalOpen={setIsModalOpen} handleShowAlertModal={handleShowAlertModal} page={page}/>
             )}
             <ModalAlert isOpen={showModal} message={modalMessage} onClose={() => setShowModal(false)} status={modalStatus}/>
         </div>

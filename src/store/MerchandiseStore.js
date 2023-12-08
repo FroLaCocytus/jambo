@@ -8,6 +8,7 @@ export default class MerchandiseStore {
     }
 
     setMerchandises(merchandises) {
+        console.log(merchandises)
         const sortedArray = merchandises.sort((a, b) => b.id - a.id);
         this._merchandises = sortedArray
     }

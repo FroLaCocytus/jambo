@@ -27,7 +27,8 @@ export const fetchOne = async (id) => {
   return data
 }
 
-export const getAllMerchandise = async () => {
-  const {data} = await $authHost.get('merchandise/all')
+export const getAllMerchandise = async (page) => {
+  console.log(page)
+  const {data} = await $authHost.get(`merchandise/all?page=${page-1}&size=${10}`)
   return data
 }

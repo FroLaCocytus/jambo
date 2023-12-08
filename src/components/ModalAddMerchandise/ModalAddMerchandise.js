@@ -7,7 +7,7 @@ import { Context } from "../../index";
 import { getAllMerchandise } from "../../http/merchandiseAPI";
 import ModalAlert from "../ModalAlert/ModalAlert";
 
-const ModalAddMerchandise = observer(({setIsModalOpen, handleShowAlertModal}) => {
+const ModalAddMerchandise = observer(({setIsModalOpen, handleShowAlertModal, page}) => {
 
     const {merchandise} = useContext(Context)
 
@@ -34,8 +34,8 @@ const ModalAddMerchandise = observer(({setIsModalOpen, handleShowAlertModal}) =>
         .catch(e => {
             handleShowAlertModal(e.response.data,false)
         })
-        getAllMerchandise().then(data => {
-            merchandise.setMerchandises(data)
+        getAllMerchandise(page).then(data => {
+            merchandise.setMerchandises(data.content)
         })  
     };
 

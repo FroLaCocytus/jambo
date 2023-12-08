@@ -84,7 +84,7 @@ const Warehouse = observer(() => {
                             </div>
                         </div>
                         <div className={styles.table_bottom}>
-                            <ListMerchandises handleShowAlertModal={handleShowAlertModal} page={page}/>
+                            <ListMerchandises handleShowAlertModal={handleShowAlertModal} page={page} setPage={setPage} setMaxPage={setMaxPage}/>
                         </div>
                     </div>
                     <div className={styles.pagination}>
@@ -95,7 +95,7 @@ const Warehouse = observer(() => {
                 </div>
             </div>
             {isModalOpen && (
-                <ModalAddMerchandise setIsModalOpen={setIsModalOpen} handleShowAlertModal={handleShowAlertModal} page={page}/>
+                <ModalAddMerchandise setIsModalOpen={setIsModalOpen} handleShowAlertModal={handleShowAlertModal} page={page} setMaxPage={setMaxPage}/>
             )}
             <ModalAlert isOpen={showModal} message={modalMessage} onClose={() => setShowModal(false)} status={modalStatus}/>
         </div>

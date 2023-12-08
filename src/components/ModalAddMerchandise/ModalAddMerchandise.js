@@ -7,7 +7,7 @@ import { Context } from "../../index";
 import { getAllMerchandise } from "../../http/merchandiseAPI";
 import ModalAlert from "../ModalAlert/ModalAlert";
 
-const ModalAddMerchandise = observer(({setIsModalOpen, handleShowAlertModal, page}) => {
+const ModalAddMerchandise = observer(({setIsModalOpen, handleShowAlertModal, page, setMaxPage}) => {
 
     const {merchandise} = useContext(Context)
 
@@ -36,6 +36,7 @@ const ModalAddMerchandise = observer(({setIsModalOpen, handleShowAlertModal, pag
         })
         getAllMerchandise(page).then(data => {
             merchandise.setMerchandises(data.content)
+            setMaxPage(data.totalPages)
         })  
     };
 

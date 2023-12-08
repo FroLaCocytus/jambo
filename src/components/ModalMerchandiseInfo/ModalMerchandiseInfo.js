@@ -7,7 +7,7 @@ import { Context } from "../../index";
 import { getAllMerchandise } from "../../http/merchandiseAPI";
 import ModalAlert from "../ModalAlert/ModalAlert";
 
-const ModalMerchandiseInfo = observer(({setIsModalOpen, selectedItem, handleShowAlertModal, page}) => {
+const ModalMerchandiseInfo = observer(({setIsModalOpen, selectedItem, handleShowAlertModal, page, setPage, setMaxPage}) => {
 
   const {merchandise} = useContext(Context)
 
@@ -39,6 +39,7 @@ const handlerUpdate = async () => {
     })
     getAllMerchandise(page).then(data => {
         merchandise.setMerchandises(data.content)
+        setMaxPage(data.totalPages)
     })
 
   };
@@ -54,6 +55,10 @@ const handlerUpdate = async () => {
     })
     getAllMerchandise(page).then(data => {
         merchandise.setMerchandises(data.content)
+        setMaxPage(data.totalPages)
+        if (data.totalPages<page){
+            setPage(data.totalPages)
+        }
     })
     setIsModalOpen(false)
   };

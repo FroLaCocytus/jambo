@@ -5,7 +5,7 @@ import { Context } from "../../index";
 import ModalMerchandiseInfo from "../../components/ModalMerchandiseInfo/ModalMerchandiseInfo";
 
 
-const ListMerchandises = observer(({handleShowAlertModal, page}) => {
+const ListMerchandises = observer(({handleShowAlertModal, page, setPage, setMaxPage}) => {
 
     const {merchandise} = useContext(Context)
     const arrayMerchandise = merchandise.merchandises
@@ -33,7 +33,13 @@ const ListMerchandises = observer(({handleShowAlertModal, page}) => {
                 </div>
             ))}
             {isModalInfoOpen && (
-                <ModalMerchandiseInfo setIsModalOpen={setIsModalInfoOpen} selectedItem={selectedItem} handleShowAlertModal={handleShowAlertModal} page={page}/>
+                <ModalMerchandiseInfo 
+                setIsModalOpen={setIsModalInfoOpen} 
+                selectedItem={selectedItem} 
+                handleShowAlertModal={handleShowAlertModal} 
+                page={page} 
+                setPage={setPage}
+                setMaxPage={setMaxPage}/>
             )}
         </div>
     );

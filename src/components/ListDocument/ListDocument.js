@@ -3,11 +3,14 @@ import styles from './ListDocument.module.css'
 import { observer } from 'mobx-react-lite';
 import { Context } from "../../index";
 import ModalDocInfo from "../../components/ModalDocInfo/ModalDocInfo";
+import ModalDocInfoRole from "../../components/ModalDocInfoRole/ModalDocInfoRole";
 
 
 const ListDocument = observer(({handleShowAlertModal, page, setPage, setMaxPage}) => {
 
     const {documentStore} = useContext(Context)
+    const {user} = useContext(Context)
+
     const arrayDocument = documentStore.documents
     const [isModalInfoOpen, setIsModalInfoOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
@@ -38,13 +41,23 @@ const ListDocument = observer(({handleShowAlertModal, page, setPage, setMaxPage}
                 </div>
             ))}
             {isModalInfoOpen && (
-                <ModalDocInfo 
-                setIsModalOpen={setIsModalInfoOpen} 
-                selectedItem={selectedItem}
-                handleShowAlertModal={handleShowAlertModal} 
-                page={page} 
-                setPage={setPage}
-                setMaxPage={setMaxPage}/>
+                user.role === 'accountant' ? (
+                    <ModalDocInfo
+                        setIsModalOpen={setIsModalInfoOpen} 
+                        selectedItem={selectedItem}
+                        handleShowAlertModal={handleShowAlertModal} 
+                        page={page} 
+                        setPage={setPage}
+                        setMaxPage={setMaxPage} />
+                ) : (
+                    <ModalDocInfoRole 
+                        setIsModalOpen={setIsModalInfoOpen} 
+                        selectedItem={selectedItem}
+                        handleShowAlertModal={handleShowAlertModal} 
+                        page={page} 
+                        setPage={setPage}
+                        setMaxPage={setMaxPage} />
+                )
             )}
         </div>
         

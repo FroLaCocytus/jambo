@@ -50,7 +50,13 @@ export const merchandiser_buttons = [
         text: "Склад",
         link: imageTomato,
         route: '/merchandiser/warehouse'
+    },
+    {
+        text: "Документы",
+        link: imageDocument,
+        route: '/merchandiser/document'
     }
+
 ]
 
 export const cashier_buttons = [

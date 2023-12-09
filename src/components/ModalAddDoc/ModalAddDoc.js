@@ -10,6 +10,7 @@ const ModalAddDoc = observer(({setIsModalOpen, handleShowAlertModal, page, setPa
 
   const [selectedFile, setSelectedFile] = useState(null);
   const {documentStore} = useContext(Context)
+  const {user} = useContext(Context)
 
   const options = ["merchandiser", "chef"];
   const [accessRole, setAccessRole] = useState([]);
@@ -26,7 +27,7 @@ const ModalAddDoc = observer(({setIsModalOpen, handleShowAlertModal, page, setPa
         return
     }
 
-    await updloadDocument(selectedFile, description, accessRole)
+    await updloadDocument(selectedFile, description, user.role, accessRole)
     .then(data => {
         handleShowAlertModal(`Документ ${data.title} успешно добавлен`,true)
         setSelectedFile(null)
@@ -36,7 +37,7 @@ const ModalAddDoc = observer(({setIsModalOpen, handleShowAlertModal, page, setPa
     .catch(e => {
         handleShowAlertModal(e.response.data,true)
     })
-    getAllDocuments(page).then(data => {
+    getAllDocuments(page,user.role).then(data => {
         documentStore.setDocuments(data.content)
         setMaxPage(data.totalPages)
     })

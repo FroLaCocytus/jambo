@@ -1,14 +1,14 @@
 //База
 import React, {useState, useContext, useEffect} from "react";
-import styles from './Documents.module.css'
+import styles from './DocumentsMerchandise.module.css'
 
 //Всё для навбара
 import NavBar from "../../components/NavBar/NavBar";
 import NavButton from "../../components/NavButton/NavButton";
-import { accountant_buttons } from "../../nav_button";
+import { merchandiser_buttons } from "../../nav_button";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
-import { getAllDocuments } from "../../http/documentAPI";
+import { getAllDocumentsByRole } from "../../http/documentAPI";
 import ListDocument from "../../components/ListDocument/ListDocument";
 import ModalAddDoc from "../../components/ModalAddDoc/ModalAddDoc";
 import ModalAlert from "../../components/ModalAlert/ModalAlert";
@@ -17,13 +17,11 @@ import ModalAlert from "../../components/ModalAlert/ModalAlert";
 import { ReactComponent as LeftArrow } from '../../img/arrow_left.svg';
 import { ReactComponent as RightArrow } from '../../img/arrow_right.svg';
 
-const Documents = observer(() => {
+const DocumentsMerchandise = observer(() => {
     const flagOutput = true 
     
     const {documentStore} = useContext(Context)
     const {user} = useContext(Context)
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Модалка с уведомлениями
     const [showModal, setShowModal] = useState(false);
@@ -50,7 +48,7 @@ const Documents = observer(() => {
     };
 
     useEffect(()=>{
-        getAllDocuments(page,user.role).then(data => {
+        getAllDocumentsByRole(page, user.role).then(data => {
             documentStore.setDocuments(data.content)
             setMaxPage(data.totalPages)
         })
@@ -61,7 +59,7 @@ const Documents = observer(() => {
         <div className={styles.container}>
             <div className={styles.left_side}>
                 <NavBar>
-                    <NavButton data={accountant_buttons} flagOutput={flagOutput}/>
+                    <NavButton data={merchandiser_buttons} flagOutput={flagOutput}/>
                 </NavBar>
             </div>
             <div className={styles.right_side}>
@@ -70,7 +68,6 @@ const Documents = observer(() => {
                         <div className={styles.title_text}>Документы</div>
                     </div>
                     <div className={styles.title_right}>
-                        <div onClick={()=>{setIsModalOpen(true)}} className={styles.button_upload}>Загрузить документ</div>
                     </div>
                 </div>
                 <div className={styles.data_box}>
@@ -94,13 +91,10 @@ const Documents = observer(() => {
                     </div>
                 </div>
             </div>
-            {isModalOpen && (
-                <ModalAddDoc setIsModalOpen={setIsModalOpen} handleShowAlertModal={handleShowAlertModal} page={page} setPage={setPage} setMaxPage={setMaxPage}/>
-            )}
             <ModalAlert isOpen={showModal} message={modalMessage} onClose={() => setShowModal(false)} status={modalStatus}/>
         </div>
     );
 
 });
 
-export default Documents;
+export default DocumentsMerchandise;

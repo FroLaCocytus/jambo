@@ -10,7 +10,9 @@ import { format } from 'date-fns';
 const ModalDocInfo = observer(({setIsModalOpen, selectedItem, handleShowAlertModal, page, setPage, setMaxPage}) => {
 
   const [selectedFile, setSelectedFile] = useState(null);
+  
   const {documentStore} = useContext(Context)
+  const {user} = useContext(Context)
 
   const options = ["merchandiser", "chef"];
   const [accessRole, setAccessRole] = useState([]);
@@ -24,14 +26,14 @@ const ModalDocInfo = observer(({setIsModalOpen, selectedItem, handleShowAlertMod
 
   const updateFileInfo = async () => {
     
-    await updateDocumentInfo(selectedItem.id, description, accessRole)
+    await updateDocumentInfo(selectedItem.id, description, user.role, accessRole)
     .then(data => {
         handleShowAlertModal(`Документ ${data.title} успешно обновлён`, true)
     })
     .catch(e => {
         handleShowAlertModal(e.response.data, false)
     })
-    getAllDocuments(page).then(data => {
+    getAllDocuments(page,user.role).then(data => {
         documentStore.setDocuments(data.content)
         setMaxPage(data.totalPages)
     })
@@ -39,14 +41,14 @@ const ModalDocInfo = observer(({setIsModalOpen, selectedItem, handleShowAlertMod
   };
 
   const deleteFile = async () => {
-    await deleteDocument(selectedItem.id)
+    await deleteDocument(selectedItem.id, user.role)
     .then(data => {
-        if(data.success === true)handleShowAlertModal(`Документ успешно удалён`,true)
+        if(data === 200)handleShowAlertModal(`Документ успешно удалён`,true)
     })
     .catch(e => {
         handleShowAlertModal(e.response.data, false)
     })
-    getAllDocuments(page).then(data => {
+    getAllDocuments(page,user.role).then(data => {
         documentStore.setDocuments(data.content)
         if (data.totalPages<page && data.totalPages !== 0){
             setPage(data.totalPages)

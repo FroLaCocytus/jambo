@@ -48,7 +48,7 @@ const handlerUpdate = async () => {
 
     await deleteMerchandise(selectedItem.id)
     .then(data => {
-        if(data.success === true)handleShowAlertModal(`Товар успешно удалён`,true)
+        if(data === 200)handleShowAlertModal(`Товар успешно удалён`,true)
     })
     .catch(e => {
         handleShowAlertModal(e.response.data,false)

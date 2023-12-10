@@ -15,10 +15,11 @@ export const updateMerchandise = async (id, title, count) => {
 }
 
 export const deleteMerchandise = async (id) => {
-  const requestData = {id: id};
-  console.log(id)
-  const {data} = await $authHost.post('merchandise/delete', requestData)
-  return data
+  const queryParams = {
+    id: id
+  };
+  const response = await $authHost.delete('merchandise/delete', { params: queryParams });
+  return response.status
 }
 
 // export const getOne = async (id) => {

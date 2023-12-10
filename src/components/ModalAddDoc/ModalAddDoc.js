@@ -23,10 +23,14 @@ const ModalAddDoc = observer(({setIsModalOpen, handleShowAlertModal, page, setPa
 
   const uploadFile = async () => {
     if (!selectedFile) {
-        handleShowAlertModal("Загрузите файл!", false)
+        handleShowAlertModal("Вы не загрузили файл", false)
         return
     }
 
+    if (description === "") {
+        handleShowAlertModal("Вы не написали описание", false)
+        return
+    }
     await updloadDocument(selectedFile, description, user.role, accessRole)
     .then(data => {
         handleShowAlertModal(`Документ ${data.title} успешно добавлен`,true)
@@ -76,7 +80,12 @@ const ModalAddDoc = observer(({setIsModalOpen, handleShowAlertModal, page, setPa
             <div className={styles.custom_file_upload} onClick={() => document.getElementById('file-upload').click()}>
                 {selectedFile ? <div>{selectedFile.name}</div> : <div>Выберите файл</div>}
             </div>
-            <input id="file-upload" className={styles.modal_input} type="file" onChange={handleFileChange} accept=".docx" />
+            <input 
+            id="file-upload" 
+            className={styles.modal_input} 
+            type="file" 
+            onChange={handleFileChange} 
+            accept=".doc,.docx,.xls,.xlsx" />
         </div>
         <div className={styles.modal_description}>
             <div className={styles.modal_description_text}>Описание</div>

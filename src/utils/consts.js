@@ -11,6 +11,7 @@ export const STAFF_ROUTE = '/accountant/staff'
 
 export const WAREHOUSE_ROUTE = '/merchandiser/warehouse'
 export const DOCUMENT_MERCHANDISE_ROUTE = '/merchandiser/document'
+export const DOCUMENT_CHEF_ROUTE = '/chef/document'
 
 export const CASHIER_ROUTE = '/cashier'
 

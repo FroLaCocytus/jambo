@@ -9,12 +9,13 @@ import Documents from "./pages/Documents/Documents"
 import Staff from "./pages/Staff/Staff"
 import Warehouse from "./pages/Warehouse/Warehouse"
 import DocumentsMerchandise from "./pages/DocumentsMerchandise/DocumentsMerchandise"
+import DocumentsChef from "./pages/DocumentsChef/DocumentsChef"
 
 import CashierPage from "./pages/CashierPage/CashierPage"
 
 
 import { BASKET_ROUTE, LOGIN_ROUTE, MENU_ROUTE, REGISTRATION_ROUTE, START_ROUTE, PROFILE_ROUTE, RESTAURANT_ROUTE, 
-    DOCUMENT_ROUTE, STAFF_ROUTE, WAREHOUSE_ROUTE, CASHIER_ROUTE, DOCUMENT_MERCHANDISE_ROUTE } from "./utils/consts"
+    DOCUMENT_ROUTE, STAFF_ROUTE, WAREHOUSE_ROUTE, CASHIER_ROUTE, DOCUMENT_MERCHANDISE_ROUTE, DOCUMENT_CHEF_ROUTE } from "./utils/consts"
 
 export const publicRoutes = [
     {
@@ -78,5 +79,12 @@ export const cashierRoutes = [
     {
         path: CASHIER_ROUTE,
         Element: <CashierPage />
+    }
+]
+
+export const chefRoutes = [
+    {
+        path: DOCUMENT_CHEF_ROUTE,
+        Element: <DocumentsChef />
     }
 ]

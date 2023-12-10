@@ -35,7 +35,7 @@ const ModalAddDoc = observer(({setIsModalOpen, handleShowAlertModal, page, setPa
         setAccessRole([])
     })
     .catch(e => {
-        handleShowAlertModal(e.response.data,true)
+        handleShowAlertModal(e.response.data, false)
     })
     getAllDocuments(page,user.role).then(data => {
         documentStore.setDocuments(data.content)

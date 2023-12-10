@@ -16,7 +16,7 @@ const ModalAddMerchandise = observer(({setIsModalOpen, handleShowAlertModal, pag
     // Функция создания товара
     const handlerCreate = async () => {
         // Регулярные выражения для проверки ввода
-        const namePattern = /^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9]{0,24}$/;
+        const namePattern = /^[a-zA-Zа-яА-Я][a-zA-Zа-яА-Я0-9 ]{0,24}$/;
         const countPattern = /^[1-9]\d{0,4}$/;
 
         // Проверка корректности введенных данных

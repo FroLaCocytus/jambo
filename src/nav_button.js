@@ -67,3 +67,13 @@ export const cashier_buttons = [
         route: '/cashier'
     }
 ]
+
+export const chef_buttons = [
+
+    {
+        text: "Документы",
+        link: imageDocument,
+        route: '/chef/document'
+    }
+
+]

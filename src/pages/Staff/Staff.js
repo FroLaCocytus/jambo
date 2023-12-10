@@ -9,53 +9,124 @@ import { accountant_buttons } from "../../nav_button";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import { observer } from "mobx-react-lite";
 import { registration } from "../../http/userAPI";
+import ModalAlert from "../../components/ModalAlert/ModalAlert";
 
 
 const Staff = observer(() => {
-    const options = ["merchandiser", "cashier", "junior chef", "courier"];
+    const options = ["merchandiser", "chef", "junior chef", "cashier", "courier" ];
 
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [role, setRole] = useState(null);
+    const [role, setRole] = useState("");
+
+    // Модалка с уведомлениями
+    const [showModal, setShowModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+    const [modalStatus, setModalStatus] = useState(true);
 
     const flagOutput = true;
 
+    const checkLogin = (login) => {
+      const loginStartsWithLetter = /^[a-z]/;
+      const loginAlphanumeric = /^[a-z0-9]+$/;
+      const loginLength = /^.{4,20}$/;
+  
+      if (!loginStartsWithLetter.test(login)) {
+          return "Ошибка: логин должен начинаться с маленькой латинской буквы";
+      }
+      if (!loginAlphanumeric.test(login)) {
+          return "Ошибка: логин может содержать только маленькие латинские буквы и цифры";
+      }
+      if (!loginLength.test(login)) {
+          return "Ошибка: длина логина должна быть от 4 до 20 символов";
+      }
+      return null; 
+  };
+  
+  const checkPassword = (password) => {
+      const passwordLength = /^.{6,20}$/;
+      const passwordLowercase = /^(?=.*[a-z])/;
+      const passwordUppercase = /^(?=.*[A-Z])/;
+      const passwordDigit = /^(?=.*\d)/;
+  
+      if (!passwordLength.test(password)) {
+          return "Ошибка: длина пароля должна быть от 6 до 20 символов";
+      }
+      if (!passwordLowercase.test(password)) {
+          return "Ошибка: пароль должен содержать хотя бы одну маленькую букву";
+      }
+      if (!passwordUppercase.test(password)) {
+          return "Ошибка: пароль должен содержать хотя бы одну большую букву";
+      }
+      if (!passwordDigit.test(password)) {
+          return "Ошибка: пароль должен содержать хотя бы одну цифру";
+      }
+      return null; 
+  };
+
+  const checkConfirmPassword = (password, confirmPassword) => {
+    if (!(password === confirmPassword)) {
+      console.log(password)
+      console.log(confirmPassword)
+      return "Ошибка: пароли не совпадают";
+    }
+
+    return null;
+  }
+
+  const checkRole = (role) => {
+    if (role === "") {
+      return "Ошибка: не выбрана роль";
+    }
+
+    return null;
+  }
+
     const register = async () => {
 
-        let alertMessage = "Некорректные данные:\n";
-        let incorrectCount = 0;
-        const regexLogin = /^[a-zA-Z][a-zA-Z0-9]{3,14}$/
-        const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,14}$/
-  
-        if (!regexLogin.test(login)){
-          alertMessage = alertMessage + "Некорректный логин (от 4 до 15 символов, только буквы и цифры)\n"
-          incorrectCount += 1
-        }
-        if (!regexPassword.test(password)){
-          alertMessage = alertMessage + "Некорректный пароль (от 6 до 15 символов, должен содержать хотябы одну заглавную и прописную букву, а также цифру)\n"
-          incorrectCount += 1
-        }
-        if (password !== confirmPassword){
-          alertMessage = alertMessage + "Пароли не совпадают\n"
-          incorrectCount += 1
-        }
-        if (role === null){
-          alertMessage = alertMessage + "Роль не выбрана"
-          incorrectCount += 1
-        }
-        if (incorrectCount > 0) {
-          alert(alertMessage)
-          return
-        }
+      const loginError = checkLogin(login);
+      if (loginError) {
+          handleShowAlertModal(loginError, false);
+          return;
+      }
+
+      const passwordError = checkPassword(password);
+      if (passwordError) {
+          handleShowAlertModal(passwordError, false);
+          return;
+      }
+
+      const confirmPasswordError = checkConfirmPassword(password, confirmPassword);
+      if (confirmPasswordError) {
+          handleShowAlertModal(confirmPasswordError, false);
+          return;
+      }
+
+      const roleError = checkRole(role);
+      if (roleError) {
+          handleShowAlertModal(roleError, false);
+          return;
+      }
+
         await registration(login, password, role)
         .then(data => {
-          alert("Успешно")
+          handleShowAlertModal("Пользователь успешно создан", true)
+          setLogin("");
+          setPassword("");
+          setConfirmPassword("");
+          setRole("");
         })
         .catch(e => {
-          alert(e.response.data)
+          handleShowAlertModal(e.response.data, false)
         })
       }
+
+      const handleShowAlertModal = (message, status) => {
+        setModalMessage(message); 
+        setModalStatus(status);
+        setShowModal(true); 
+      };
 
     return (
         
@@ -109,6 +180,7 @@ const Staff = observer(() => {
                     </div>
                 </div>
             </div>
+            <ModalAlert isOpen={showModal} message={modalMessage} onClose={() => setShowModal(false)} status={modalStatus}/>
         </div>
     );
 

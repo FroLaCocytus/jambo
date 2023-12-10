@@ -17,10 +17,9 @@
     width: 20vw;
     height: 20vh;
 
-    padding: 5%;
+    padding: 7%;
     border-radius: 10px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -38,7 +37,8 @@
   }
   
   .message {
-    height: 20%;
+    height: 100%;
+    width: 100%;
     /* margin-bottom: 20px; */
   }
 

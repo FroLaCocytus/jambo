@@ -5,6 +5,8 @@ import { ReactComponent as Logo } from '../../img/logo.svg';
 import { useNavigate  } from 'react-router-dom';
 import { registration } from "../../http/userAPI";
 import { observer } from "mobx-react-lite";
+import ModalAlert from "../../components/ModalAlert/ModalAlert";
+
 
 const Registration = observer(() => {
 
@@ -14,41 +16,95 @@ const Registration = observer(() => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    // Модалка с уведомлениями
+    const [showModal, setShowModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+    const [modalStatus, setModalStatus] = useState(true);
+
+    const checkLogin = (login) => {
+      const loginStartsWithLetter = /^[a-z]/;
+      const loginAlphanumeric = /^[a-z0-9]+$/;
+      const loginLength = /^.{4,20}$/;
+  
+      if (!loginStartsWithLetter.test(login)) {
+          return "Ошибка: логин должен начинаться с маленькой латинской буквы";
+      }
+      if (!loginAlphanumeric.test(login)) {
+          return "Ошибка: логин может содержать только маленькие латинские буквы и цифры";
+      }
+      if (!loginLength.test(login)) {
+          return "Ошибка: длина логина должна быть от 4 до 20 символов";
+      }
+      return null; 
+  };
+  
+  const checkPassword = (password) => {
+      const passwordLength = /^.{6,20}$/;
+      const passwordLowercase = /^(?=.*[a-z])/;
+      const passwordUppercase = /^(?=.*[A-Z])/;
+      const passwordDigit = /^(?=.*\d)/;
+  
+      if (!passwordLength.test(password)) {
+          return "Ошибка: длина пароля должна быть от 6 до 20 символов";
+      }
+      if (!passwordLowercase.test(password)) {
+          return "Ошибка: пароль должен содержать хотя бы одну маленькую букву";
+      }
+      if (!passwordUppercase.test(password)) {
+          return "Ошибка: пароль должен содержать хотя бы одну большую букву";
+      }
+      if (!passwordDigit.test(password)) {
+          return "Ошибка: пароль должен содержать хотя бы одну цифру";
+      }
+      return null; 
+  };
+
+  const checkConfirmPassword = (password, confirmPassword) => {
+    if (!(password === confirmPassword)) {
+      return "Ошибка: пароли не совпадают";
+    }
+
+    return null;
+  }
+
     const register = async () => {
 
-      let alertMessage = "Некорректные данные:\n";
-      let incorrectCount = 0;
-      const regexLogin = /^[a-zA-Z][a-zA-Z0-9]{3,14}$/
-      const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,14}$/
-
-      if (!regexLogin.test(login)){
-        alertMessage = alertMessage + "Некорректный логин (от 4 до 15 символов, только буквы и цифры)\n"
-        incorrectCount += 1
-      }
-      if (!regexPassword.test(password)){
-        alertMessage = alertMessage + "Некорректный пароль (от 6 до 15 символов, должен содержать хотябы одну заглавную и прописную букву, а также цифру)\n"
-        incorrectCount += 1
-      }
-      if (password !== confirmPassword){
-        alertMessage = alertMessage + "Пароли не совпадают"
-        incorrectCount += 1
+      const loginError = checkLogin(login);
+      if (loginError) {
+          handleShowAlertModal(loginError, false);
+          return;
       }
 
-      if (incorrectCount > 0) {
-        alert(alertMessage)
-        return
+      const passwordError = checkPassword(password);
+      if (passwordError) {
+          handleShowAlertModal(passwordError, false);
+          return;
+      }
+
+      const confirmPasswordError = checkConfirmPassword(password, confirmPassword);
+      if (confirmPasswordError) {
+          handleShowAlertModal(confirmPasswordError, false);
+          return;
       }
 
       await registration(login, password, "client")
       .then(data => {
-        alert('Успешно!')
-        navigate('/')
+        handleShowAlertModal('Пользователь успешно добавлен!', true)
+        setTimeout(() => {
+          navigate('/'); // Вызов функции перехода к дашборду (или другому пути)
+      }, 3000);
       })
       .catch(e => {
-        alert(e.response.data)
+        handleShowAlertModal(e.response.data, false)
       })
 
     }
+
+    const handleShowAlertModal = (message, status) => {
+      setModalMessage(message); 
+      setModalStatus(status);
+      setShowModal(true); 
+    };
 
     return (
         <div className={styles.container}>
@@ -92,6 +148,8 @@ const Registration = observer(() => {
                 </form>  
                 <div onClick={register} className={styles.form_button}>Зарегистрироваться</div>
             </div>
+            <ModalAlert isOpen={showModal} message={modalMessage} onClose={() => setShowModal(false)} status={modalStatus}/>
+
         </div>
     );
 
